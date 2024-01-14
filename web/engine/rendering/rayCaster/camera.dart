@@ -2,7 +2,6 @@ import 'dart:math';
 
 import '../../ecs/components/doorComponent.dart';
 import '../../ecs/gameEntity.dart';
-import '../../logger/logger.dart';
 import '../../utils/mathUtils.dart';
 import 'worldMap.dart';
 

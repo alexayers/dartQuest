@@ -15,6 +15,7 @@ import '../../engine/ecs/gameEntityRegistry.dart';
 import '../../engine/ecs/gameRenderSystem.dart';
 import '../../engine/ecs/gameSystem.dart';
 import '../../engine/ecs/system/entity/cameraSystem.dart';
+import '../../engine/ecs/system/entity/damageSystem.dart';
 import '../../engine/ecs/system/entity/interactionSystem.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/input/keyboard.dart';
@@ -37,6 +38,8 @@ class TestScreen extends GameScreenBase implements GameScreen {
     walkSound = "stepDirt.wav";
     gameSystems.add(CameraSystem());
     gameSystems.add(InteractionSystem());
+    gameSystems.add(DamageSystem());
+
 
     renderSystems.add(RayCastRenderSystem());
 
@@ -101,7 +104,8 @@ class TestScreen extends GameScreenBase implements GameScreen {
     worldDefinition.floorColor = Color(25, 25, 25);
     worldDefinition.lightRange = 7;
     worldDefinition.grid = grid;
-    worldDefinition.items.add(orc);
+    worldDefinition.items = [];
+    worldDefinition.npcs = [orc];
     worldDefinition.width = 10;
     worldDefinition.height = 10;
     worldDefinition.skyBox = null;
@@ -155,6 +159,7 @@ class TestScreen extends GameScreenBase implements GameScreen {
       }
     }
 
+
     for (var gameEntity in worldMap.worldDefinition.items) {
       if (gameEntity.hasComponent("animatedSprite")) {
         AnimatedSpriteComponent animatedSprite = gameEntity
@@ -162,6 +167,15 @@ class TestScreen extends GameScreenBase implements GameScreen {
         animatedSprite.nextFrame();
       }
     }
+
+    for (var gameEntity in worldMap.worldDefinition.npcs) {
+      if (gameEntity.hasComponent("animatedSprite")) {
+        AnimatedSpriteComponent animatedSprite = gameEntity
+            .getComponent("animatedSprite") as AnimatedSpriteComponent;
+        animatedSprite.nextFrame();
+      }
+    }
+
 
     sway();
     holdingItem();

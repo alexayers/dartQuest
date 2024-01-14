@@ -245,7 +245,7 @@ class RayCaster {
   }
 
   void renderShadows(num perpWallDist, int x, num drawStart, int lineHeight) {
-    double lightRange = 6;
+    num lightRange = worldMap.worldDefinition.lightRange;
     double calculatedAlpha = math.max((perpWallDist + 0.002) / lightRange, 0);
 
     Renderer.rect(x.toInt(), drawStart.toInt(), 1, lineHeight + 1,
@@ -280,6 +280,8 @@ class RayCaster {
     List<num> spriteDistance = [];
     List<int> order = [];
     List<GameEntity> gameEntities = worldMap.worldDefinition.items;
+    gameEntities.addAll(worldMap.worldDefinition.npcs);
+
     List<Sprite> sprites = [];
 
     for (int i = 0; i < gameEntities.length; i++) {
@@ -446,7 +448,7 @@ class RayCaster {
     bool swapped = false;
 
     while (gap > 1 || swapped) {
-      gap = (gap * 10) ~/ 13; // Integer division
+      gap = (gap * 10) ~/ 13;
       if (gap == 9 || gap == 10) {
         gap = 11;
       }

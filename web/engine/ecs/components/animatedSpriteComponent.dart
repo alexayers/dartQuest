@@ -1,10 +1,11 @@
+import '../../logger/logger.dart';
 import '../../rendering/renderer.dart';
 import '../../rendering/sprite.dart';
 import '../gameComponent.dart';
 
 class AnimatedSpriteComponent implements GameComponent {
   int _tick = 0;
-  int _maxTicks = 7;
+  final int _maxTicks = 8;
   int _currentFrame = 0;
   List<Sprite> _frames = [];
   int _x;
@@ -40,6 +41,7 @@ class AnimatedSpriteComponent implements GameComponent {
         _currentFrame = 0;
       }
     }
+
   }
 
   void render() {
@@ -56,6 +58,8 @@ class AnimatedSpriteComponent implements GameComponent {
         _currentFrame = 0;
       }
     }
+
+    logger(LogType.debug, "animated");
   }
 
   @override

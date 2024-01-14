@@ -4,8 +4,10 @@ import '../../../logger/logger.dart';
 import '../../../rendering/rayCaster/camera.dart';
 import '../../../rendering/rayCaster/worldMap.dart';
 import '../../components/cameraComponent.dart';
+import '../../components/damageComponent.dart';
 import '../../components/distanceComponent.dart';
 import '../../components/inventoryComponent.dart';
+import '../../components/properties/takeDamageComponent.dart';
 import '../../gameEntity.dart';
 import '../../gameEntityRegistry.dart';
 import '../../gameSystem.dart';
@@ -27,7 +29,7 @@ class AttackSystem implements GameSystem {
     GameEntity holdingItem = inventory.getCurrentItem()!;
 
     if (isNpc(cameraComponent.camera)) {
-      attackNpc(cameraComponent.camera);
+      attackNpc(cameraComponent.camera, holdingItem);
     }
 
   }
@@ -51,7 +53,7 @@ class AttackSystem implements GameSystem {
     return false;
   }
 
-  void attackNpc(Camera camera) {
+  void attackNpc(Camera camera,GameEntity holdingItem) {
     List<GameEntity> npcs = _worldMap.worldDefinition.items;
 
 
@@ -61,7 +63,14 @@ class AttackSystem implements GameSystem {
 
       if (distanceComponent.distance <= 1) {
 
-        logger(LogType.debug, "You attacked ${npc.name}");
+
+
+        DamageComponent damageComponent = holdingItem.getComponent("damage") as DamageComponent;
+
+        npc.addComponent(TakeDamageComponent(damageComponent.amount));
+
+        logger(LogType.debug, "You attacked ${npc.name} for ${damageComponent.amount} points of damage");
+
         break;
 
       }

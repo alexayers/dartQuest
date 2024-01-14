@@ -22,8 +22,6 @@ class MainMenuScreen implements GameScreen {
 
   @override
   void init() {
-    audioManager.register("theme", "../../assets/sound/theme.wav");
-    audioManager.register("boop", "../../assets/sound/boop.wav");
 
     _menuItems.add("Begin");
     _menuItems.add("Quit");

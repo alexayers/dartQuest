@@ -2,7 +2,9 @@ import 'dart:math';
 
 import '../../engine/application/globalState.dart';
 import '../../engine/audio/audioManager.dart';
+import '../../engine/ecs/components/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/damageComponent.dart';
+import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/holdingSpriteComponent.dart';
 import '../../engine/ecs/components/interactions/attackActionComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
@@ -15,9 +17,12 @@ import '../../engine/ecs/gameRenderSystem.dart';
 import '../../engine/ecs/gameSystem.dart';
 import '../../engine/ecs/system/entity/attackSystem.dart';
 import '../../engine/ecs/system/entity/cameraSystem.dart';
+import '../../engine/ecs/system/entity/damageSystem.dart';
 import '../../engine/ecs/system/entity/interactionSystem.dart';
 import '../../engine/ecs/system/entity/pickUpSystem.dart';
+import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/input/keyboard.dart';
+import '../../engine/input/mouse.dart';
 import '../../engine/logger/logger.dart';
 import '../../engine/primitives/color.dart';
 import '../../engine/rendering/font.dart';
@@ -31,7 +36,7 @@ import '../../fonts.dart';
 
 
 class GameScreenBase {
-  late String walkSound;
+  late String walkSound ="";
   final num _moveSpeed = 0.065;
 
   final AudioManager audioManager = AudioManager.instance;
@@ -52,14 +57,18 @@ class GameScreenBase {
   bool _useTool = false;
   final Map<int, GameEntity> translationTable = {};
   final TimerUtil _walkTimer = TimerUtil(550);
+  final TimerUtil _attackTimer = TimerUtil(250);
 
   GameScreenBase() {
+
     registerSystems([
       CameraSystem(),
       InteractionSystem(),
       PickUpSystem(),
+      DamageSystem(),
       AttackSystem()
     ]);
+
 
     logger(LogType.info, "Systems registered");
   }
@@ -132,7 +141,9 @@ class GameScreenBase {
 
       if (_walkTimer.hasTimePassed()) {
         _walkTimer.reset();
-        audioManager.play(walkSound);
+        if (walkSound != "") {
+          audioManager.play(walkSound);
+        }
       }
     }
 
@@ -144,7 +155,11 @@ class GameScreenBase {
 
       if (_walkTimer.hasTimePassed()) {
         _walkTimer.reset();
-        audioManager.play(walkSound);
+
+        if (walkSound != "") {
+          audioManager.play(walkSound);
+        }
+
       }
     }
 
@@ -161,11 +176,17 @@ class GameScreenBase {
           player.getComponent("inventory") as InventoryComponent;
       GameEntity holdingItem = inventory.getCurrentItem()!;
 
-      if (holdingItem.hasComponent("damage")) {
-        player.addComponent(AttackActionComponent());
+      if (_attackTimer.hasTimePassed()) {
+
+        _attackTimer.reset();
+
+        if (holdingItem.hasComponent("damage")) {
+          player.addComponent(AttackActionComponent());
+        }
+
+        _useTool = true;
       }
 
-      _useTool = true;
     }
 
     if (isKeyDown(keyboardInput.shift)) {
@@ -186,12 +207,19 @@ class GameScreenBase {
   void logicLoop() {
     keyboard();
 
-    for (var gameSystem in gameSystems) {
-      if (gameSystem.shouldRun(player)) {
-        gameSystem.processEntity(player);
-        gameSystem.removeIfPresent(player);
+    List<GameEntity> gameEntities = [];
+    gameEntities.add(player);
+    gameEntities.addAll(worldMap.getWorldNpcs());
+
+    for (var gameEntity in gameEntities) {
+      for (var gameSystem in gameSystems) {
+        if (gameSystem.shouldRun(gameEntity)) {
+          gameSystem.processEntity(gameEntity);
+          gameSystem.removeIfPresent(gameEntity);
+        }
       }
     }
+
 
     if (camera.xPos == _lastXPos && camera.yPos == _lastYPos) {
       _updateSway = false;
@@ -202,6 +230,7 @@ class GameScreenBase {
   InventoryComponent createInventory() {
     InventoryComponent inventory = InventoryComponent(6);
 
+    /*
     GameEntity sword = GameEntityBuilder("sword")
         .addComponent(DamageComponent(1))
         .addComponent(InventorySpriteComponent(
@@ -211,6 +240,8 @@ class GameScreenBase {
         .build();
 
     inventory.addItem(sword);
+
+     */
 
     return inventory;
   }
@@ -298,5 +329,17 @@ class GameScreenBase {
     for (var gameRenderSystem in gameRenderSystems) {
       postRenderSystems.add(gameRenderSystem);
     }
+  }
+
+
+
+  @override
+  void mouseClick(double x, double y, MouseButton mouseButton) {
+    // TODO: implement mouseClick
+  }
+
+  @override
+  void mouseMove(double x, double y) {
+    // TODO: implement mouseMove
   }
 }

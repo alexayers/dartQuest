@@ -1,6 +1,7 @@
 import '../../ecs/components/doorComponent.dart';
 import '../../ecs/components/pushWallComponent.dart';
 import '../../ecs/gameEntity.dart';
+import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../sprite.dart';
 import 'renderPerformance.dart';
@@ -56,6 +57,7 @@ class WorldMap {
     }
 
     _worldLoaded = true;
+    logger(LogType.info, "The map has been loaded.");
   }
 
   void moveDoors() {
@@ -125,6 +127,12 @@ class WorldMap {
     return worldDefinition.items;
   }
 
+  List<GameEntity> getWorldNpcs() {
+    return worldDefinition.npcs;
+  }
+
+
+
   void removeWorldItem(GameEntity gameEntity) {
 
     int index = -1;
@@ -136,6 +144,22 @@ class WorldMap {
 
     if (index > -1) {
       worldDefinition.items.removeAt(index);
+    }
+
+
+  }
+
+  void removeWorldNpc(GameEntity gameEntity) {
+
+    int index = -1;
+    for (int i = 0; i < worldDefinition.npcs.length; i++) {
+      if (gameEntity.id == worldDefinition.npcs[i].id) {
+        index = i;
+      }
+    }
+
+    if (index > -1) {
+      worldDefinition.npcs.removeAt(index);
     }
 
 
