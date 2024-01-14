@@ -159,18 +159,44 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     translationTable[10] = shopSign;
 
+    GameEntity shopBooks = GameEntityBuilder("shopBooks")
+        .addComponent(WallComponent())
+        .addComponent(SpriteComponent(Sprite(128,128, "../../assets/images/outside/shopBooks.png")))
+        .build();
+
+    translationTable[11] = shopBooks;
+
+    GameEntity shopWeapons = GameEntityBuilder("shopWeapons")
+        .addComponent(WallComponent())
+        .addComponent(SpriteComponent(Sprite(128,128, "../../assets/images/outside/shopWeapons.png")))
+        .build();
+
+    translationTable[12] = shopWeapons;
+
+    Map<String, List<String>> wellAnimation = {};
+
+    wellAnimation["idle"] = [
+      "../../assets/images/outside/well1.png"
+    ];
+
+    GameEntity well = GameEntityBuilder("well")
+        .addComponent(WallComponent())
+        .addComponent(AnimatedSpriteComponent(128,128, wellAnimation))
+        .build();
+
+    translationTable[13] = well;
 
     List<int> grid = [
       1,1,1,1,1,1,1,1,1,1,
       1,0,0,0,0,0,0,0,0,1,
       1,0,0,0,0,0,0,0,0,1,
-      1,0,4,0,0,0,0,0,0,1,
-      3,0,0,0,0,0,10,8,9,1,
-      2,0,0,0,0,0,9,0,0,1,
-      3,0,4,0,0,0,7,7,7,1,
-      1,0,0,0,0,0,0,4,0,1,
-      1,0,0,0,0,0,0,0,0,1,
-      1,1,1,1,5,6,5,1,1,1,
+      1,0,13,0,0,0,0,0,0,1,
+      3,0,0,0,0,0,10,8,9,7,
+      2,0,0,0,0,0,9,0,0,12,
+      3,0,4,0,0,0,9,0,0,9,
+      1,0,0,0,0,0,9,0,0,12,
+      1,0,0,0,0,0,9,11,11,7,
+      1,1,1,5,6,5,1,1,1,1,
     ];
 
     WorldDefinition worldDefinition = WorldDefinition();
@@ -240,14 +266,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     items.add(flowers2);
 
-    GameEntity stick = GameEntityBuilder("stick")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(3.98, 6.76))
-        .addComponent(CanPickUpComponent())
-        .addComponent(SpriteComponent(Sprite(32,32, "../../assets/images/weapons/stickInventory.png")))
-        .build();
 
-    items.add(stick);
 
     return items;
   }

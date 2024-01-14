@@ -8,10 +8,12 @@ import '../../engine/ecs/components/damageComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/holdingSpriteComponent.dart';
 import '../../engine/ecs/components/interactions/attackActionComponent.dart';
+import '../../engine/ecs/components/interactions/interactingActionComponent.dart';
 import '../../engine/ecs/components/interactions/pickUpActionComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
 import '../../engine/ecs/components/inventorySpriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
+import '../../engine/ecs/components/weaponComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
 import '../../engine/ecs/gameEntityRegistry.dart';
@@ -57,6 +59,8 @@ class GameScreenBase {
   bool _updateSway = false;
   late num _lastXPos = 0;
   late num _lastYPos = 0;
+
+
   int _moves = 0;
   List<GameEntity> requiresPower = [];
   bool _useTool = false;
@@ -79,6 +83,12 @@ class GameScreenBase {
 
 
     logger(LogType.info, "Systems registered");
+  }
+
+  void swingSword() {
+
+
+
   }
 
   void sway() {
@@ -184,6 +194,9 @@ class GameScreenBase {
     }
 
     if (isKeyDown(keyboardInput.space)) {
+
+      player.addComponent(InteractingActionComponent());
+
       InventoryComponent inventory =
           player.getComponent("inventory") as InventoryComponent;
       GameEntity holdingItem = inventory.getCurrentItem()!;
@@ -192,12 +205,13 @@ class GameScreenBase {
 
         _attackTimer.reset();
 
-        if (holdingItem.hasComponent("damage")) {
+        if (holdingItem.hasComponent("weapon")) {
           player.addComponent(AttackActionComponent());
         }
 
         _useTool = true;
       }
+
 
     }
 
@@ -245,6 +259,7 @@ class GameScreenBase {
 
     GameEntity sword = GameEntityBuilder("sword")
         .addComponent(DamageComponent(1))
+    .addComponent(WeaponComponent())
         .addComponent(InventorySpriteComponent(
             Sprite(0, 0, "../../assets/images/weapons/swordInventory.png")))
         .addComponent(HoldingSpriteComponent(
