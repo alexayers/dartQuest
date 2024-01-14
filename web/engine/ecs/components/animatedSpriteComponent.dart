@@ -7,7 +7,7 @@ class AnimatedSpriteComponent implements GameComponent {
   int _tick = 0;
   final int _maxTicks = 8;
   int _currentFrame = 0;
-  final String _currentAction = "idle";
+  String currentAction = "idle";
   final Map<String, List<Sprite>> _frames = {};
   int _x;
   int _y;
@@ -28,7 +28,7 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   Sprite currentSprite() {
-    return _frames[_currentAction]![_currentFrame];
+    return _frames[currentAction]![_currentFrame];
   }
 
   void nextFrame() {
@@ -38,7 +38,7 @@ class AnimatedSpriteComponent implements GameComponent {
       _tick = 0;
       _currentFrame++;
 
-      if (_currentFrame == _frames[_currentAction]!.length) {
+      if (_currentFrame == _frames[currentAction]!.length) {
         _currentFrame = 0;
       }
     }
@@ -46,7 +46,7 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   void render() {
-    Sprite sprite = _frames[_currentAction]![_currentFrame];
+    Sprite sprite = _frames[currentAction]![_currentFrame];
     Renderer.renderImage(sprite.image, _x, _y, sprite.width, sprite.height);
 
     _tick++;
@@ -55,7 +55,7 @@ class AnimatedSpriteComponent implements GameComponent {
       _tick = 0;
       _currentFrame++;
 
-      if (_currentFrame == _frames[_currentAction]!.length) {
+      if (_currentFrame == _frames[currentAction]!.length) {
         _currentFrame = 0;
       }
     }

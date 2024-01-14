@@ -7,6 +7,7 @@ class Sprite {
   int height;
   num x = 0;
   num y = 0;
+  num z = 0;
   ImageElement image;
 
   Sprite(this.width, this.height, String imageFile) : image = ImageElement() {

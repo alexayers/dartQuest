@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../../engine/application/gameScreenOverlay.dart';
 import '../../engine/application/globalState.dart';
 import '../../engine/audio/audioManager.dart';
 import '../../engine/ecs/components/animatedSpriteComponent.dart';
@@ -7,6 +8,7 @@ import '../../engine/ecs/components/damageComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/holdingSpriteComponent.dart';
 import '../../engine/ecs/components/interactions/attackActionComponent.dart';
+import '../../engine/ecs/components/interactions/pickUpActionComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
 import '../../engine/ecs/components/inventorySpriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
@@ -41,6 +43,7 @@ class GameScreenBase {
   late String walkSound ="";
   final num _moveSpeed = 0.065;
 
+  List<GameScreenOverlay> gameScreenOverlays = [];
   final AudioManager audioManager = AudioManager.instance;
   final GameEntityRegistry gameEntityRegistry = GameEntityRegistry.instance;
   final List<GameSystem> gameSystems = [];
@@ -72,6 +75,7 @@ class GameScreenBase {
       AiSystem(),
       MovementSystem()
     ]);
+
 
 
     logger(LogType.info, "Systems registered");
@@ -173,6 +177,10 @@ class GameScreenBase {
 
     if (isKeyDown(keyboardInput.right)) {
       velocity.rotateRight = true;
+    }
+
+    if (isKeyDown(keyboardInput.p)) {
+      player.addComponent(PickUpActionComponent());
     }
 
     if (isKeyDown(keyboardInput.space)) {
@@ -311,9 +319,9 @@ class GameScreenBase {
   }
 
   void debug() {
-    Renderer.print("X: ${camera.xPos} Y: ${camera.yPos}", 10, 20,
+    Renderer.print("X: ${camera.xPos.round()} Y: ${camera.yPos.round()}", 10, 20,
         Font(Fonts.oxanium.name, 10, Colors.white));
-    Renderer.print("dirX: ${camera.xDir} dirY: ${camera.yDir}", 10, 40,
+    Renderer.print("dirX: ${camera.xDir} dirY: ${camera.yDir}", 250, 20,
         Font(Fonts.oxanium.name, 10, Colors.white));
   }
 
@@ -335,7 +343,43 @@ class GameScreenBase {
     }
   }
 
+  @override
+  void renderLoop() {
 
+
+    for (var system in renderSystems) {
+      system.process();
+    }
+
+    for (var gameEntity in translationTable.values) {
+
+      if (gameEntity.hasComponent("animatedSprite")) {
+        AnimatedSpriteComponent animatedSprite = gameEntity
+            .getComponent("animatedSprite") as AnimatedSpriteComponent;
+        animatedSprite.nextFrame();
+      }
+    }
+
+    for (var gameEntity in worldMap.worldDefinition.npcs) {
+      if (gameEntity.hasComponent("animatedSprite")) {
+        AnimatedSpriteComponent animatedSprite = gameEntity
+            .getComponent("animatedSprite") as AnimatedSpriteComponent;
+        animatedSprite.nextFrame();
+      }
+    }
+
+
+    sway();
+    holdingItem();
+
+    wideScreen();
+    debug();
+
+    for (var overlays in gameScreenOverlays) {
+      overlays.render();
+    }
+
+  }
 
   @override
   void mouseClick(double x, double y, MouseButton mouseButton) {

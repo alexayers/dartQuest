@@ -9,6 +9,7 @@ import '../../engine/ecs/components/doorComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/itemComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
+import '../../engine/ecs/components/properties/canPickUpComponent.dart';
 import '../../engine/ecs/components/spriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
@@ -21,11 +22,15 @@ import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
 import '../../engine/rendering/spriteSheet.dart';
+import '../components/rendering/bobAnimationComponent.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
+import 'uiOverlayScreen.dart';
 
 class OutsideScreen extends GameScreenBase implements GameScreen {
+
+
 
   @override
   void init() {
@@ -49,6 +54,12 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
         .build();
 
     gameEntityRegistry.registerSingleton(player);
+
+    gameScreenOverlays.add(UiOverlayScreen());
+
+    for (var overlays in gameScreenOverlays) {
+      overlays.init();
+    }
 
   }
 
@@ -181,13 +192,20 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   List<GameEntity> addNpcs() {
     List<GameEntity> npcs = [];
 
-    Map<String, List<String>> oldManAnimation = {};
+    Map<String, List<String>> dogAnimation = {};
 
-    oldManAnimation["idle"] = [
+    dogAnimation["walking"] = [
       "../../assets/images/npc/dog/dog1.png",
       "../../assets/images/npc/dog/dog2.png",
       "../../assets/images/npc/dog/dog1.png",
       "../../assets/images/npc/dog/dog3.png"
+    ];
+
+    dogAnimation["idle"] = [
+      "../../assets/images/npc/dog/dogSit1.png",
+      "../../assets/images/npc/dog/dogSit2.png",
+      "../../assets/images/npc/dog/dogSit1.png",
+      "../../assets/images/npc/dog/dogSit3.png"
     ];
 
     GameEntity dog = GameEntityBuilder("dog")
@@ -195,7 +213,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     .addComponent(VelocityComponent(0,0))
     .addComponent(AiComponent())
     .addComponent(PositionComponent(4, 4))
-        .addComponent(AnimatedSpriteComponent(32,32, oldManAnimation))
+        .addComponent(AnimatedSpriteComponent(32,32, dogAnimation))
         .build();
 
     npcs.add(dog);
@@ -208,7 +226,6 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     GameEntity flowers = GameEntityBuilder("flowers")
         .addComponent(ItemComponent())
-        .addComponent(DistanceComponent())
         .addComponent(PositionComponent(3.4, 4.9))
         .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
         .build();
@@ -217,57 +234,30 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     GameEntity flowers2 = GameEntityBuilder("flowers")
         .addComponent(ItemComponent())
-        .addComponent(DistanceComponent())
         .addComponent(PositionComponent(5.3, 4.2))
         .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
         .build();
 
     items.add(flowers2);
 
+    GameEntity stick = GameEntityBuilder("stick")
+        .addComponent(ItemComponent())
+        .addComponent(PositionComponent(3.98, 6.76))
+        .addComponent(CanPickUpComponent())
+        .addComponent(SpriteComponent(Sprite(32,32, "../../assets/images/weapons/stickInventory.png")))
+        .build();
+
+    items.add(stick);
+
     return items;
   }
 
 
-  @override
-  void renderLoop() {
 
-
-    for (var system in renderSystems) {
-      system.process();
-    }
-
-    for (var gameEntity in translationTable.values) {
-
-      if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
-            .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
-      }
-    }
-
-
-  
-
-    for (var gameEntity in worldMap.worldDefinition.npcs) {
-      if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
-            .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
-      }
-    }
-
-
-    sway();
-    holdingItem();
-
-    wideScreen();
-    debug();
-
-  }
 
   @override
   void onEnter() {
-   audioManager.play("rain");
+  // audioManager.play("rain");
   }
 
   @override

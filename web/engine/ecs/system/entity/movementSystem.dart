@@ -1,4 +1,5 @@
 import '../../../rendering/rayCaster/worldMap.dart';
+import '../../components/animatedSpriteComponent.dart';
 import '../../components/positionComponent.dart';
 import '../../components/velocityComponent.dart';
 import '../../gameEntity.dart';
@@ -17,9 +18,15 @@ class MovementSystem implements GameSystem {
     int tempX = (positionComponent.x + velocityComponent.velX).floor();
     int tempY = (positionComponent.y + velocityComponent.velY).floor();
 
+    AnimatedSpriteComponent animatedSpriteComponent = gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
+
+
     if (canWalk(tempX, tempY)) {
       positionComponent.x += velocityComponent.velX;
       positionComponent.y += velocityComponent.velY;
+      animatedSpriteComponent.currentAction = "walking";
+    } else {
+      animatedSpriteComponent.currentAction = "idle";
     }
 
     velocityComponent.velX = 0;
@@ -32,7 +39,54 @@ class MovementSystem implements GameSystem {
 
     GameEntity gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY);
 
-    return !gameEntity.hasComponent("wall");
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY - 1);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY + 1);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX + 1, checkMapY);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY + 1);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY + 1);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+    gameEntity = _worldMap.getEntityAtPosition(checkMapX + 1, checkMapY + 1);
+
+    if (gameEntity.hasComponent("wall")) {
+      return false;
+    }
+
+
+    return true;
   }
 
   @override

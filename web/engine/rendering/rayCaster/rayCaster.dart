@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:math';
 
+import '../../../game/components/rendering/bobAnimationComponent.dart';
 import '../../ecs/components/animatedSpriteComponent.dart';
 import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/positionComponent.dart';
@@ -313,6 +314,8 @@ class RayCaster {
       sprite.sprite.x = position.x;
       sprite.sprite.y = position.y;
 
+      postCalculationRenderEffects(gameEntity, sprite);
+
       sprites.add(sprite.sprite);
     }
 
@@ -475,4 +478,28 @@ class RayCaster {
   }
 
   void flushBuffer() {}
+
+  void postCalculationRenderEffects(GameEntity gameEntity, SpriteComponent sprite) {
+
+    if (gameEntity.hasComponent("bobAnimation")) {
+      BobAnimationComponent bobAnimationComponent = gameEntity.getComponent("bobAnimation") as BobAnimationComponent;
+
+      if (bobAnimationComponent.headingDown) {
+        bobAnimationComponent.yOffset--;
+      } else {
+        bobAnimationComponent.yOffset++;
+      }
+
+      sprite.sprite.x += bobAnimationComponent.yOffset;
+
+      if (bobAnimationComponent.headingDown && bobAnimationComponent.yOffset < -3) {
+        bobAnimationComponent.headingDown = false;
+      } else if (!bobAnimationComponent.headingDown && bobAnimationComponent.yOffset > 3) {
+        bobAnimationComponent.headingDown = true;
+      }
+
+    }
+
+
+  }
 }

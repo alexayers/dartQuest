@@ -5,7 +5,7 @@ import '../../../engine/rendering/renderer.dart';
 import '../../../engine/utils/mathUtils.dart';
 
 class FogRenderSystem implements GameRenderSystem {
-  List<Particle> _particles = [];
+  final List<Particle> _particles = [];
 
   FogRenderSystem() {
     for (int i = 0; i < 100; i++) {
@@ -18,8 +18,7 @@ class FogRenderSystem implements GameRenderSystem {
     particle.y = MathUtils.getRandomBetween(0, Renderer.getCanvasHeight());
     particle.width = MathUtils.getRandomBetween(500, 1200);
     particle.height = MathUtils.getRandomBetween(500, 1200);
-    particle.color =
-        Color(120, 120, 120, 0.006);
+    particle.color = Color(120, 120, 120, 0.006);
     particle.lifeSpan = 900;
     particle.velX = 0;
     particle.velY = 0;
