@@ -1,9 +1,14 @@
 
 import '../../engine/application/gameScreen.dart';
 import '../../engine/ecs/components/SpriteSheetComponent.dart';
+import '../../engine/ecs/components/ai/aiComponent.dart';
 import '../../engine/ecs/components/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/cameraComponent.dart';
+import '../../engine/ecs/components/distanceComponent.dart';
+import '../../engine/ecs/components/doorComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
+import '../../engine/ecs/components/itemComponent.dart';
+import '../../engine/ecs/components/positionComponent.dart';
 import '../../engine/ecs/components/spriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
@@ -16,6 +21,8 @@ import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
 import '../../engine/rendering/spriteSheet.dart';
+import '../systems/rendering/fogRenderSystem.dart';
+import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
 
 class OutsideScreen extends GameScreenBase implements GameScreen {
@@ -23,6 +30,13 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   @override
   void init() {
     renderSystems.add(RayCastRenderSystem());
+    renderSystems.add(RainRenderSystem());
+    renderSystems.add(FogRenderSystem());
+
+    walkSound = "stepDirt";
+
+    audioManager.register("stepDirt", "../../assets/sound/stepDirt.wav");
+    audioManager.register("rain", "../../assets/sound/rain.ogg", true);
 
     _createMap();
 
@@ -81,14 +95,19 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     translationTable[5] = dirt;
 
-    GameEntity waterFall = GameEntityBuilder("waterFall")
-        .addComponent(WallComponent())
-        .addComponent(AnimatedSpriteComponent(128,128, [
-          "../../assets/images/outside/waterFall1.png",
+    Map<String, List<String>> waterFallAnimation = {};
+
+    waterFallAnimation["idle"] = [
+      "../../assets/images/outside/waterFall1.png",
       "../../assets/images/outside/waterFall2.png",
       "../../assets/images/outside/waterFall3.png",
       "../../assets/images/outside/waterFall4.png",
-    ]))
+      "../../assets/images/outside/waterFall5.png"
+    ];
+
+    GameEntity waterFall = GameEntityBuilder("waterFall")
+        .addComponent(WallComponent())
+        .addComponent(AnimatedSpriteComponent(128,128, waterFallAnimation))
         .build();
 
     translationTable[6] = waterFall;
@@ -101,11 +120,19 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     translationTable[7] = shopWall;
 
     GameEntity shopDoor = GameEntityBuilder("shopDoor")
-        .addComponent(WallComponent())
+        .addComponent(DoorComponent())
         .addComponent(SpriteComponent(Sprite(128,128, "../../assets/images/outside/shopDoor.png")))
         .build();
 
     translationTable[8] = shopDoor;
+
+    GameEntity doorFrame = GameEntityBuilder("doorFrame")
+        .addComponent(WallComponent())
+        .addComponent(
+        SpriteComponent(Sprite(128, 128, "../../assets/images/outside/doorFrame.png")))
+        .build();
+
+    gameEntityRegistry.registerSingleton(doorFrame);
 
     GameEntity shopWindow = GameEntityBuilder("shopWindow")
         .addComponent(WallComponent())
@@ -136,12 +163,12 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     ];
 
     WorldDefinition worldDefinition = WorldDefinition();
-    worldDefinition.skyColor = Color(45, 178, 250);
+    worldDefinition.skyColor = Color(16, 29, 52);
     worldDefinition.floorColor = Color(38, 90, 42);
-    worldDefinition.lightRange = 20;
+    worldDefinition.lightRange = 10;
     worldDefinition.grid = grid;
-    worldDefinition.items = [];
-    worldDefinition.npcs = [];
+    worldDefinition.items = addItems();
+    worldDefinition.npcs = addNpcs();
     worldDefinition.width = 10;
     worldDefinition.height = 10;
     worldDefinition.skyBox = null;
@@ -149,6 +176,55 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     worldMap.loadMap(worldDefinition);
 
+  }
+
+  List<GameEntity> addNpcs() {
+    List<GameEntity> npcs = [];
+
+    Map<String, List<String>> oldManAnimation = {};
+
+    oldManAnimation["idle"] = [
+      "../../assets/images/npc/dog/dog1.png",
+      "../../assets/images/npc/dog/dog2.png",
+      "../../assets/images/npc/dog/dog1.png",
+      "../../assets/images/npc/dog/dog3.png"
+    ];
+
+    GameEntity dog = GameEntityBuilder("dog")
+    .addComponent(DistanceComponent())
+    .addComponent(VelocityComponent(0,0))
+    .addComponent(AiComponent())
+    .addComponent(PositionComponent(4, 4))
+        .addComponent(AnimatedSpriteComponent(32,32, oldManAnimation))
+        .build();
+
+    npcs.add(dog);
+
+    return npcs;
+  }
+
+  List<GameEntity> addItems() {
+    List<GameEntity> items = [];
+
+    GameEntity flowers = GameEntityBuilder("flowers")
+        .addComponent(ItemComponent())
+        .addComponent(DistanceComponent())
+        .addComponent(PositionComponent(3.4, 4.9))
+        .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
+        .build();
+
+    items.add(flowers);
+
+    GameEntity flowers2 = GameEntityBuilder("flowers")
+        .addComponent(ItemComponent())
+        .addComponent(DistanceComponent())
+        .addComponent(PositionComponent(5.3, 4.2))
+        .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
+        .build();
+
+    items.add(flowers2);
+
+    return items;
   }
 
 
@@ -162,8 +238,6 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     for (var gameEntity in translationTable.values) {
 
-
-
       if (gameEntity.hasComponent("animatedSprite")) {
         AnimatedSpriteComponent animatedSprite = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
@@ -172,13 +246,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     }
 
 
-    for (var gameEntity in worldMap.worldDefinition.items) {
-      if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
-            .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
-      }
-    }
+  
 
     for (var gameEntity in worldMap.worldDefinition.npcs) {
       if (gameEntity.hasComponent("animatedSprite")) {
@@ -199,12 +267,12 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
   @override
   void onEnter() {
-    // TODO: implement onEnter
+   audioManager.play("rain");
   }
 
   @override
   void onExit() {
-    // TODO: implement onExit
+    audioManager.stop("rain");
   }
 
 }

@@ -15,10 +15,12 @@ import '../../engine/ecs/gameEntityBuilder.dart';
 import '../../engine/ecs/gameEntityRegistry.dart';
 import '../../engine/ecs/gameRenderSystem.dart';
 import '../../engine/ecs/gameSystem.dart';
+import '../../engine/ecs/system/entity/aiSystem.dart';
 import '../../engine/ecs/system/entity/attackSystem.dart';
 import '../../engine/ecs/system/entity/cameraSystem.dart';
 import '../../engine/ecs/system/entity/damageSystem.dart';
 import '../../engine/ecs/system/entity/interactionSystem.dart';
+import '../../engine/ecs/system/entity/movementSystem.dart';
 import '../../engine/ecs/system/entity/pickUpSystem.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/input/keyboard.dart';
@@ -66,7 +68,9 @@ class GameScreenBase {
       InteractionSystem(),
       PickUpSystem(),
       DamageSystem(),
-      AttackSystem()
+      AttackSystem(),
+      AiSystem(),
+      MovementSystem()
     ]);
 
 
@@ -230,7 +234,7 @@ class GameScreenBase {
   InventoryComponent createInventory() {
     InventoryComponent inventory = InventoryComponent(6);
 
-    /*
+
     GameEntity sword = GameEntityBuilder("sword")
         .addComponent(DamageComponent(1))
         .addComponent(InventorySpriteComponent(
@@ -241,7 +245,7 @@ class GameScreenBase {
 
     inventory.addItem(sword);
 
-     */
+
 
     return inventory;
   }
@@ -257,7 +261,7 @@ class GameScreenBase {
 
       HoldingSpriteComponent holdingItemSprite =
           holdingItem.getComponent("holdingSprite") as HoldingSpriteComponent;
-      holdingItemSprite.sprite.render(280 + xOffset, 110 + yOffset, 512, 512);
+      holdingItemSprite.sprite.render(480 + xOffset, 400 + yOffset, 256, 256);
     }
   }
 

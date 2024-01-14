@@ -66,19 +66,7 @@ class TestScreen extends GameScreenBase implements GameScreen {
 
     gameEntityRegistry.registerSingleton(doorFrame);
 
-    GameEntity orc = GameEntityBuilder("orc")
-    .addComponent(PositionComponent(4, 4))
-    .addComponent(DistanceComponent())
-    .addComponent(HealthComponent(10, 10))
-        .addComponent(
-        AnimatedSpriteComponent(16, 16,
-            ["../../assets/images/npc/orcFront1.png",
-              "../../assets/images/npc/orcFront2.png",
-              "../../assets/images/npc/orcFront1.png",
-              "../../assets/images/npc/orcFront3.png"
-            ]
-        ))
-        .build();
+
 
     List<int> grid = [
       1,1,1,1,1,1,1,1,1,1,
@@ -105,7 +93,7 @@ class TestScreen extends GameScreenBase implements GameScreen {
     worldDefinition.lightRange = 7;
     worldDefinition.grid = grid;
     worldDefinition.items = [];
-    worldDefinition.npcs = [orc];
+    worldDefinition.npcs = [];
     worldDefinition.width = 10;
     worldDefinition.height = 10;
     worldDefinition.skyBox = null;

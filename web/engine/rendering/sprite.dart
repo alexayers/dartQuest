@@ -5,8 +5,8 @@ import 'renderer.dart';
 class Sprite {
   int width;
   int height;
-  int x = 0;
-  int y = 0;
+  num x = 0;
+  num y = 0;
   ImageElement image;
 
   Sprite(this.width, this.height, String imageFile) : image = ImageElement() {

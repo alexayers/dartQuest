@@ -7,27 +7,28 @@ class AnimatedSpriteComponent implements GameComponent {
   int _tick = 0;
   final int _maxTicks = 8;
   int _currentFrame = 0;
-  List<Sprite> _frames = [];
+  final String _currentAction = "idle";
+  final Map<String, List<Sprite>> _frames = {};
   int _x;
   int _y;
 
-  AnimatedSpriteComponent(this._x, this._y, List<String> imageFiles) {
-    _frames = [];
+  AnimatedSpriteComponent(this._x, this._y, Map<String,List<String>> imageFiles) {
 
-    for (var imageFile in imageFiles) {
-      _frames.add(Sprite(_x, _y, imageFile));
+    for (String key in imageFiles.keys) {
+      _frames[key] = [];
+      logger(LogType.debug, "$key");
+      for (String image in imageFiles[key]!) {
+        logger(LogType.debug, image);
+        _frames[key]!.add(Sprite(_x, _y, image));
+      }
     }
 
     _currentFrame = 0;
     _tick = 0;
   }
 
-  addSprite(Sprite sprite) {
-    _frames.add(sprite);
-  }
-
   Sprite currentSprite() {
-    return _frames[_currentFrame];
+    return _frames[_currentAction]![_currentFrame];
   }
 
   void nextFrame() {
@@ -37,7 +38,7 @@ class AnimatedSpriteComponent implements GameComponent {
       _tick = 0;
       _currentFrame++;
 
-      if (_currentFrame == _frames.length) {
+      if (_currentFrame == _frames[_currentAction]!.length) {
         _currentFrame = 0;
       }
     }
@@ -45,7 +46,7 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   void render() {
-    Sprite sprite = _frames[_currentFrame];
+    Sprite sprite = _frames[_currentAction]![_currentFrame];
     Renderer.renderImage(sprite.image, _x, _y, sprite.width, sprite.height);
 
     _tick++;
@@ -54,7 +55,7 @@ class AnimatedSpriteComponent implements GameComponent {
       _tick = 0;
       _currentFrame++;
 
-      if (_currentFrame == _frames.length) {
+      if (_currentFrame == _frames[_currentAction]!.length) {
         _currentFrame = 0;
       }
     }

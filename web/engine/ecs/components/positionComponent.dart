@@ -1,10 +1,10 @@
 import '../gameComponent.dart';
 
 class PositionComponent implements GameComponent {
-  int x;
-  int y;
+  num x;
+  num y;
 
-  PositionComponent(int valueX, int valueY)
+  PositionComponent(num valueX, num valueY)
       : x = valueX,
         y = valueY;
 
