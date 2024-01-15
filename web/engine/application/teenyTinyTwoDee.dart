@@ -12,7 +12,9 @@ import 'globalState.dart';
 class TeenyTinyTwoDeeApp {
   Map<String, GameScreen> _gameScreens = {};
   String? _currentScreen;
-  final int framesPerSecond = 60;
+
+  num _lastTimestamp = -1;
+  final num _frameDuration = 1000 ~/ 60; // Duration for 60 FPS
 
   TeenyTinyTwoDeeApp() {
     // ConfigurationManager.init(cfg);
@@ -59,18 +61,26 @@ class TeenyTinyTwoDeeApp {
     });
 
     GameEventBus.publish(ScreenChangeEvent(currentScreen));
-    gameLoop();
+    gameLoop(_lastTimestamp);
   }
 
-  void gameLoop() {
-    _gameScreens[_currentScreen]?.logicLoop();
+  void gameLoop(num timestamp) {
 
-    Renderer.clearScreen();
+    if (_lastTimestamp < 0) {
+      _lastTimestamp = timestamp;
+    }
 
-    _gameScreens[_currentScreen]?.renderLoop();
+    num deltaTime = timestamp - _lastTimestamp;
 
-    Future.delayed(Duration(milliseconds: 1000 ~/ framesPerSecond), () {
-      window.animationFrame.then((_) => gameLoop());
-    });
+    if (deltaTime >= _frameDuration) {
+
+      _lastTimestamp += _frameDuration;
+
+      _gameScreens[_currentScreen]?.logicLoop();
+      Renderer.clearScreen();
+      _gameScreens[_currentScreen]?.renderLoop();
+    }
+
+    window.animationFrame.then((timestamp) => gameLoop(timestamp));
   }
 }

@@ -29,7 +29,7 @@ class UiOverlayScreen implements GameScreenOverlay {
 
   @override
   void render() {
-    coins.render(10,50,32,32);
+    //coins.render(10,50,32,32);
   }
 
 }

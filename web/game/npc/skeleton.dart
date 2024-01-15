@@ -39,7 +39,7 @@ class Skeleton {
     return GameEntityBuilder("skeleton")
         .addComponent(DistanceComponent())
         .addComponent(VelocityComponent(0,0))
-        .addComponent(AiComponent())
+        .addComponent(AiComponent(MovementStyle.follow))
         .addComponent(HealthComponent(5, 5))
         .addComponent(PositionComponent(5, 5))
         .addComponent(AnimatedSpriteComponent(32,32, animation))

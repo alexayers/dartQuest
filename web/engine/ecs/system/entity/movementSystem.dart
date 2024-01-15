@@ -55,49 +55,8 @@ class MovementSystem implements GameSystem {
     int checkMapX = x.floor();
     int checkMapY = y.floor();
 
+
     GameEntity gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY - 1);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY + 1);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX + 1, checkMapY);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX - 1, checkMapY + 1);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY + 1);
-
-    if (gameEntity.hasComponent("wall")) {
-      return false;
-    }
-
-    gameEntity = _worldMap.getEntityAtPosition(checkMapX + 1, checkMapY + 1);
 
     if (gameEntity.hasComponent("wall")) {
       return false;

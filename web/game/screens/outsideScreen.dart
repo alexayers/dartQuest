@@ -247,7 +247,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     .addComponent(DistanceComponent())
     .addComponent(VelocityComponent(0,0))
     .addComponent(TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
-    .addComponent(AiComponent())
+    .addComponent(AiComponent(MovementStyle.wander))
     .addComponent(PositionComponent(4, 4))
         .addComponent(AnimatedSpriteComponent(32,32, dogAnimation))
         .build();

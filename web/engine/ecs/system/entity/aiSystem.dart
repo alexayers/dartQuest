@@ -1,41 +1,93 @@
 
 
+import 'dart:math';
+
+import '../../../logger/logger.dart';
+import '../../../pathFinding/aiStar.dart';
+import '../../../rendering/rayCaster/camera.dart';
 import '../../../utils/mathUtils.dart';
 import '../../components/ai/aiComponent.dart';
+import '../../components/cameraComponent.dart';
+import '../../components/positionComponent.dart';
 import '../../components/velocityComponent.dart';
 import '../../gameEntity.dart';
+import '../../gameEntityRegistry.dart';
 import '../../gameSystem.dart';
 
 class AiSystem implements GameSystem {
 
+  final GameEntityRegistry _gameEntityRegistry = GameEntityRegistry.instance;
+
   @override
   void processEntity(GameEntity gameEntity) {
 
+    GameEntity player = _gameEntityRegistry.getSingleton("player");
+    PositionComponent positionComponent = gameEntity.getComponent("position") as PositionComponent;
       VelocityComponent velocityComponent = gameEntity.getComponent("velocity") as VelocityComponent;
       AiComponent aiComponent = gameEntity.getComponent("ai") as AiComponent;
 
-      aiComponent.ticksSinceLastChange++;
-
-      if (aiComponent.ticksSinceLastChange == 100) {
-        aiComponent.ticksSinceLastChange = 0;
-        aiComponent.currentDirection = MathUtils.getRandomBetween(1, 4);
+      switch(aiComponent.movementStyle) {
+        case MovementStyle.wander:
+          wander(aiComponent, velocityComponent);
+          break;
+        case MovementStyle.follow:
+          follow(velocityComponent,positionComponent,player);
+          break;
       }
 
-      switch (aiComponent.currentDirection) {
-        case 1:
+
+  }
+
+  void follow(VelocityComponent velocityComponent, PositionComponent positionComponent, GameEntity player) {
+
+    CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
+    Camera camera = cameraComponent.camera;
+
+    AStar aStar = AStar(positionComponent.x.floor(), positionComponent.y.floor(), camera.xPos.floor(), camera.yPos.floor());
+
+    if (aStar.isPathFound()) {
+      List<PathNode> pathNodes = aStar.path;
+
+      try {
+        if (pathNodes[0].x >= positionComponent.x) {
           velocityComponent.velX = 0.02;
-          break;
-        case 2:
+        } else if (pathNodes[0].x < positionComponent.x) {
           velocityComponent.velX = -0.02;
-          break;
-        case 3:
-          velocityComponent.velY = 0.02;
-          break;
-        case 4:
-          velocityComponent.velY = -0.02;
-          break;
-      }
+        }
 
+        if (pathNodes[0].y >= positionComponent.y) {
+          velocityComponent.velY = 0.02;
+        } else if (pathNodes[0].y < positionComponent.y) {
+          velocityComponent.velY = -0.02;
+        }
+      } catch (e) {}
+    } else {
+      logger(LogType.info, "oh noes");
+    }
+  }
+
+  void wander(AiComponent aiComponent, VelocityComponent velocityComponent ) {
+    aiComponent.ticksSinceLastChange++;
+
+    if (aiComponent.ticksSinceLastChange == 100) {
+      aiComponent.ticksSinceLastChange = 0;
+      aiComponent.currentDirection = MathUtils.getRandomBetween(1, 4);
+    }
+
+    switch (aiComponent.currentDirection) {
+      case 1:
+        velocityComponent.velX = 0.02;
+        break;
+      case 2:
+        velocityComponent.velX = -0.02;
+        break;
+      case 3:
+        velocityComponent.velY = 0.02;
+        break;
+      case 4:
+        velocityComponent.velY = -0.02;
+        break;
+    }
   }
 
   @override
@@ -47,6 +99,8 @@ class AiSystem implements GameSystem {
   bool shouldRun(GameEntity gameEntity) {
     return gameEntity.hasComponent("ai");
   }
+
+
 
 
 
