@@ -11,7 +11,8 @@ import 'globalState.dart';
 
 class TeenyTinyTwoDeeApp {
   Map<String, GameScreen> _gameScreens = {};
-  String? _currentScreen;
+  String? _currentScreenName;
+  late GameScreen _currentGameScreen;
 
   num _lastTimestamp = -1;
   final num _frameDuration = 1000 ~/ 60; // Duration for 60 FPS
@@ -51,13 +52,15 @@ class TeenyTinyTwoDeeApp {
     GameEventBus.register("__CHANGE_SCREEN__", (GameEvent gameEvent) {
       logger(LogType.info, gameEvent.payload);
 
-      if (_currentScreen != null) {
-        _gameScreens[_currentScreen]?.onExit();
+      if (_currentScreenName != null) {
+        _currentGameScreen.onExit();
       }
 
       flushKeys();
-      _currentScreen = gameEvent.payload;
-      _gameScreens[_currentScreen]?.onEnter();
+      _currentScreenName = gameEvent.payload;
+
+      _currentGameScreen = _gameScreens[_currentScreenName]!;
+      _currentGameScreen.onEnter();
     });
 
     GameEventBus.publish(ScreenChangeEvent(currentScreen));
@@ -76,9 +79,9 @@ class TeenyTinyTwoDeeApp {
 
       _lastTimestamp += _frameDuration;
 
-      _gameScreens[_currentScreen]?.logicLoop();
+      _currentGameScreen.logicLoop();
       Renderer.clearScreen();
-      _gameScreens[_currentScreen]?.renderLoop();
+      _currentGameScreen.renderLoop();
     }
 
     window.animationFrame.then((timestamp) => gameLoop(timestamp));

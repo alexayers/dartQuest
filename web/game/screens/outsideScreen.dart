@@ -7,8 +7,9 @@ import '../../engine/ecs/components/doorComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/itemComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
+import '../../engine/ecs/components/sound/hurtSoundComponent.dart';
 import '../../engine/ecs/components/spriteComponent.dart';
-import '../../engine/ecs/components/timedSoundComponent.dart';
+import '../../engine/ecs/components/sound/timedSoundComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
@@ -41,6 +42,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     player = GameEntityBuilder("player")
         .addComponent(createInventory())
+        .addComponent(HurtSoundComponent("playerHurt",  "../../assets/sound/playerHurt.wav"))
         .addComponent(HealthComponent(100, 100))
         .addComponent(CameraComponent(camera))
         .addComponent(VelocityComponent(0, 0))

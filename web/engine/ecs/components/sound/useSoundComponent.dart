@@ -1,15 +1,15 @@
 
 
-import '../../audio/audioManager.dart';
-import '../gameComponent.dart';
+import '../../../audio/audioManager.dart';
+import '../../gameComponent.dart';
 
-class UseSound implements GameComponent {
+class UseSoundComponent implements GameComponent {
 
   String soundFile;
   String soundName;
   final AudioManager _audioManager = AudioManager.instance;
 
-  UseSound(this.soundName, this.soundFile) {
+  UseSoundComponent(this.soundName, this.soundFile) {
     _audioManager.register(soundName, soundFile);
   }
 

@@ -2,7 +2,7 @@
 
 import '../../../audio/audioManager.dart';
 import '../../../utils/mathUtils.dart';
-import '../../components/timedSoundComponent.dart';
+import '../../components/sound/timedSoundComponent.dart';
 import '../../gameEntity.dart';
 import '../../gameSystem.dart';
 

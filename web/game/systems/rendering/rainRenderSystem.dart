@@ -18,8 +18,14 @@ class RainRenderSystem implements GameRenderSystem {
     particle.y = MathUtils.getRandomBetween(0, Renderer.getCanvasHeight());
     particle.width = MathUtils.getRandomBetween(3, 10);
     particle.height = MathUtils.getRandomBetween(16, 64);
-    particle.color =
-        Color(255, 255, 255, MathUtils.getRandomBetween(1, 100) / 1000);
+
+    if (particle.color.alpha < 0) {
+      particle.color.alpha = MathUtils.getRandomBetween(1, 100) / 1000;
+    } else {
+      particle.color =
+          Color(255, 255, 255, MathUtils.getRandomBetween(1, 100) / 1000);
+    }
+
     particle.lifeSpan = MathUtils.getRandomBetween(80, 100);
     particle.velX = 0;
     particle.velY = MathUtils.getRandomBetween(500, 1000);

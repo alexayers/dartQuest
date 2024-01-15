@@ -1,18 +1,16 @@
 import 'dart:math';
 
 import '../../engine/application/gameScreenOverlay.dart';
-import '../../engine/application/globalState.dart';
 import '../../engine/audio/audioManager.dart';
 import '../../engine/ecs/components/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/damageComponent.dart';
-import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/holdingSpriteComponent.dart';
 import '../../engine/ecs/components/interactions/attackActionComponent.dart';
 import '../../engine/ecs/components/interactions/interactingActionComponent.dart';
 import '../../engine/ecs/components/interactions/pickUpActionComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
 import '../../engine/ecs/components/inventorySpriteComponent.dart';
-import '../../engine/ecs/components/useSound.dart';
+import '../../engine/ecs/components/sound/useSoundComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/weaponComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
@@ -29,7 +27,6 @@ import '../../engine/ecs/system/entity/interactionSystem.dart';
 import '../../engine/ecs/system/entity/movementSystem.dart';
 import '../../engine/ecs/system/entity/pickUpSystem.dart';
 import '../../engine/ecs/system/entity/timedSoundSystem.dart';
-import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/input/keyboard.dart';
 import '../../engine/input/mouse.dart';
 import '../../engine/logger/logger.dart';
@@ -276,7 +273,7 @@ class GameScreenBase {
 
     GameEntity sword = GameEntityBuilder("sword")
         .addComponent(DamageComponent(1))
-        .addComponent(UseSound("sword", "../../assets/sound/swordHit.wav"))
+        .addComponent(UseSoundComponent("sword", "../../assets/sound/swordHit.wav"))
         .addComponent(WeaponComponent())
         .addComponent(InventorySpriteComponent(
             Sprite(0, 0, "../../assets/images/weapons/swordInventory.png")))
@@ -377,6 +374,9 @@ class GameScreenBase {
         Font(Fonts.oxanium.name, 10, Colors.white));
     Renderer.print("dirX: ${camera.xDir} dirY: ${camera.yDir}", 250, 20,
         Font(Fonts.oxanium.name, 10, Colors.white));
+
+
+
   }
 
   void registerSystems(List<GameSystem> systems) {

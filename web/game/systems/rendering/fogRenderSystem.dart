@@ -8,7 +8,7 @@ class FogRenderSystem implements GameRenderSystem {
   final List<Particle> _particles = [];
 
   FogRenderSystem() {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 30; i++) {
       _particles.add(refreshParticle(Particle()));
     }
   }
@@ -18,7 +18,13 @@ class FogRenderSystem implements GameRenderSystem {
     particle.y = MathUtils.getRandomBetween(0, Renderer.getCanvasHeight());
     particle.width = MathUtils.getRandomBetween(500, 1200);
     particle.height = MathUtils.getRandomBetween(500, 1200);
-    particle.color = Color(120, 120, 120, 0.006);
+
+    if (particle.color.alpha != 0.006) {
+      particle.color.alpha = 0.006;
+    } else {
+      particle.color = Color(120, 120, 120, 0.006);
+    }
+
     particle.lifeSpan = 900;
     particle.velX = 0;
     particle.velY = 0;

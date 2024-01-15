@@ -6,7 +6,7 @@ import '../../engine/ecs/components/damageComponent.dart';
 import '../../engine/ecs/components/distanceComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
-import '../../engine/ecs/components/useSound.dart';
+import '../../engine/ecs/components/sound/useSoundComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
@@ -42,7 +42,7 @@ class Skeleton {
     inventoryComponent.addItem(
       GameEntityBuilder("skeletonFist")
       .addComponent(DamageComponent(1))
-      .addComponent(UseSound("bone", "../../assets/sound/bone.wav"))
+      .addComponent(UseSoundComponent("bone", "../../assets/sound/bone.wav"))
           .build()
     );
 

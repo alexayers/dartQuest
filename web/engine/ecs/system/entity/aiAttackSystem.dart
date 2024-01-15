@@ -8,7 +8,7 @@ import '../../components/cameraComponent.dart';
 import '../../components/damageComponent.dart';
 import '../../components/inventoryComponent.dart';
 import '../../components/properties/takeDamageComponent.dart';
-import '../../components/useSound.dart';
+import '../../components/sound/useSoundComponent.dart';
 import '../../gameEntity.dart';
 import '../../gameEntityRegistry.dart';
 import '../../gameSystem.dart';
@@ -30,7 +30,7 @@ class AiAttackSystem implements GameSystem {
 
     if (holdingItem.hasComponent("useSound")) {
 
-      UseSound useSound = holdingItem.getComponent("useSound") as UseSound;
+      UseSoundComponent useSound = holdingItem.getComponent("useSound") as UseSoundComponent;
       _audioManager.play(useSound.soundName);
     }
 

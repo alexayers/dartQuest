@@ -1,8 +1,8 @@
 
 
-import '../../audio/audioManager.dart';
-import '../../utils/mathUtils.dart';
-import '../gameComponent.dart';
+import '../../../audio/audioManager.dart';
+import '../../../utils/mathUtils.dart';
+import '../../gameComponent.dart';
 
 class TimedSoundComponent implements GameComponent {
 

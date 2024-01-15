@@ -147,9 +147,9 @@ class RayCaster {
               if (!wallDefined) {
                 SpriteComponent sprite =
                     gameEntity.getComponent("sprite") as SpriteComponent;
-                TransparentWall tpWall = TransparentWall(
+                TransparentWall transparentWall = TransparentWall(
                     sprite.sprite, camera, mapX, mapY, side, x, _cameraXCoords);
-                _transparentWalls.add(tpWall);
+                _transparentWalls.add(transparentWall);
               }
             }
           } else {
@@ -166,9 +166,9 @@ class RayCaster {
               if (!wallDefined) {
                 SpriteComponent sprite =
                     gameEntity.getComponent("sprite") as SpriteComponent;
-                TransparentWall tpWall = TransparentWall(
+                TransparentWall transparentWall = TransparentWall(
                     sprite.sprite, camera, mapX, mapY, side, x, _cameraXCoords);
-                _transparentWalls.add(tpWall);
+                _transparentWalls.add(transparentWall);
               }
             }
           }

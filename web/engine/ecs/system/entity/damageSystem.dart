@@ -1,14 +1,18 @@
 
 
 import '../../../../game/components/healthComponent.dart';
+import '../../../audio/audioManager.dart';
 import '../../../logger/logger.dart';
 import '../../components/animatedSpriteComponent.dart';
 import '../../components/deadComponent.dart';
 import '../../components/properties/takeDamageComponent.dart';
+import '../../components/sound/hurtSoundComponent.dart';
 import '../../gameEntity.dart';
 import '../../gameSystem.dart';
 
 class DamageSystem implements GameSystem {
+  
+  AudioManager audioManager = AudioManager.instance;
 
   @override
   void processEntity(GameEntity gameEntity) {
@@ -32,6 +36,13 @@ class DamageSystem implements GameSystem {
 
         logger(LogType.debug, "${gameEntity.name} is dead.");
       }
+    } else {
+      
+      if (gameEntity.hasComponent("hurtSound")) {
+        HurtSoundComponent hurtSoundComponent = gameEntity.getComponent("hurtSound") as HurtSoundComponent;
+        audioManager.play(hurtSoundComponent.soundName);
+      }
+      
     }
 
   }

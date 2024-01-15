@@ -192,6 +192,13 @@ class AStar {
   }
 
   bool _isWall(int x, int y) {
+
+    int pos = x + (y * _worldMap.worldDefinition.width);
+
+    if (pos < 0 || pos >= (_worldMap.worldDefinition.width * _worldMap.worldDefinition.height)) {
+      return true;
+    }
+
     return _worldMap.getEntityAtPosition(x, y).hasComponent("wall");
   }
 }
