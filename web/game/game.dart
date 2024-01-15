@@ -14,6 +14,6 @@ class Game extends TeenyTinyTwoDeeApp {
     gameScreens[Screens.outside.name] = OutsideScreen();
 
 
-    super.run(gameScreens, Screens.outside.name);
+    super.run(gameScreens, Screens.pressEnter.name);
   }
 }
