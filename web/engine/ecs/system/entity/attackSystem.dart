@@ -1,5 +1,6 @@
 
 
+import '../../../audio/audioManager.dart';
 import '../../../logger/logger.dart';
 import '../../../rendering/rayCaster/camera.dart';
 import '../../../rendering/rayCaster/worldMap.dart';
@@ -8,6 +9,7 @@ import '../../components/damageComponent.dart';
 import '../../components/distanceComponent.dart';
 import '../../components/inventoryComponent.dart';
 import '../../components/properties/takeDamageComponent.dart';
+import '../../components/useSound.dart';
 import '../../gameEntity.dart';
 import '../../gameEntityRegistry.dart';
 import '../../gameSystem.dart';
@@ -16,6 +18,7 @@ class AttackSystem implements GameSystem {
 
   final WorldMap _worldMap = WorldMap.instance;
   final GameEntityRegistry _gameEntityRegistry = GameEntityRegistry.instance;
+  final AudioManager _audioManager = AudioManager.instance;
 
   @override
   void processEntity(GameEntity gameEntity) {
@@ -27,6 +30,12 @@ class AttackSystem implements GameSystem {
     InventoryComponent inventory =
     player.getComponent("inventory") as InventoryComponent;
     GameEntity holdingItem = inventory.getCurrentItem()!;
+
+    if (holdingItem.hasComponent("useSound")) {
+
+      UseSound useSound = holdingItem.getComponent("useSound") as UseSound;
+      _audioManager.play(useSound.soundName);
+    }
 
     if (isNpc(cameraComponent.camera)) {
       attackNpc(cameraComponent.camera, holdingItem);
@@ -84,7 +93,7 @@ class AttackSystem implements GameSystem {
 
   @override
   bool shouldRun(GameEntity gameEntity) {
-    return gameEntity.hasComponent("attackAction");
+    return gameEntity.hasComponent("attackAction") && gameEntity.hasComponent("camera");
   }
 
 }

@@ -19,13 +19,19 @@ class DamageSystem implements GameSystem {
     healthComponent.current -= takeDamageComponent.damage;
 
     if (healthComponent.current <= 0) {
-      gameEntity.addComponent(DeadComponent());
-      gameEntity.removeComponent("ai");
-      gameEntity.removeComponent("health");
-      AnimatedSpriteComponent animatedSpriteComponent = gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
-      animatedSpriteComponent.currentAction = "dead";
 
-      logger(LogType.debug, "${gameEntity.name} is dead.");
+      healthComponent.current = 0;
+      gameEntity.addComponent(DeadComponent());
+
+      if (!gameEntity.hasComponent("camera")) {
+        gameEntity.removeComponent("ai");
+        gameEntity.removeComponent("health");
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
+            .getComponent("animatedSprite") as AnimatedSpriteComponent;
+        animatedSpriteComponent.currentAction = "dead";
+
+        logger(LogType.debug, "${gameEntity.name} is dead.");
+      }
     }
 
   }

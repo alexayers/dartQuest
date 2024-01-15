@@ -12,6 +12,7 @@ import '../../engine/ecs/components/interactions/interactingActionComponent.dart
 import '../../engine/ecs/components/interactions/pickUpActionComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';
 import '../../engine/ecs/components/inventorySpriteComponent.dart';
+import '../../engine/ecs/components/useSound.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/weaponComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
@@ -19,6 +20,7 @@ import '../../engine/ecs/gameEntityBuilder.dart';
 import '../../engine/ecs/gameEntityRegistry.dart';
 import '../../engine/ecs/gameRenderSystem.dart';
 import '../../engine/ecs/gameSystem.dart';
+import '../../engine/ecs/system/entity/aiAttackSystem.dart';
 import '../../engine/ecs/system/entity/aiSystem.dart';
 import '../../engine/ecs/system/entity/attackSystem.dart';
 import '../../engine/ecs/system/entity/cameraSystem.dart';
@@ -40,6 +42,7 @@ import '../../engine/rendering/renderer.dart';
 import '../../engine/rendering/sprite.dart';
 import '../../engine/utils/timerUtil.dart';
 import '../../fonts.dart';
+import '../systems/rendering/deathRenderSystem.dart';
 
 
 class GameScreenBase {
@@ -85,9 +88,11 @@ class GameScreenBase {
       AttackSystem(),
       AiSystem(),
       MovementSystem(),
-      TimedSoundSystem()
+      TimedSoundSystem(),
+      AiAttackSystem()
     ]);
 
+    renderSystems.add(DeathRenderSystem());
 
 
     logger(LogType.info, "Systems registered");
@@ -251,7 +256,7 @@ class GameScreenBase {
 
     for (var gameEntity in gameEntities) {
       for (var gameSystem in gameSystems) {
-        if (gameSystem.shouldRun(gameEntity)) {
+        if (gameSystem.shouldRun(gameEntity) && !gameEntity.hasComponent("dead")) {
           gameSystem.processEntity(gameEntity);
           gameSystem.removeIfPresent(gameEntity);
         }
@@ -271,7 +276,8 @@ class GameScreenBase {
 
     GameEntity sword = GameEntityBuilder("sword")
         .addComponent(DamageComponent(1))
-    .addComponent(WeaponComponent())
+        .addComponent(UseSound("sword", "../../assets/sound/swordHit.wav"))
+        .addComponent(WeaponComponent())
         .addComponent(InventorySpriteComponent(
             Sprite(0, 0, "../../assets/images/weapons/swordInventory.png")))
         .addComponent(HoldingSpriteComponent(

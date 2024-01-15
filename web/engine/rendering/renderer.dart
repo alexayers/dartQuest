@@ -201,4 +201,8 @@ class Renderer {
   static void rotate(num angle) {
     _ctx.rotate(-(angle - pi * 0.5));
   }
+
+  static CanvasRenderingContext2D getContext() {
+    return _ctx;
+  }
 }
