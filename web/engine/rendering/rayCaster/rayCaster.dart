@@ -1,14 +1,11 @@
 import 'dart:math' as math;
-import 'dart:math';
 
-import '../../../game/components/rendering/bobAnimationComponent.dart';
 import '../../ecs/components/animatedSpriteComponent.dart';
 import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/positionComponent.dart';
 import '../../ecs/components/spriteComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../ecs/gameEntityRegistry.dart';
-import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../renderer.dart';
 import '../sprite.dart';
@@ -57,6 +54,7 @@ class RayCaster {
       stepX = 1;
       sideDistX = (mapX + 1.0 - camera.xPos) * deltaDistX;
     }
+
     if (rayDirY < 0) {
       stepY = -1;
       sideDistY = (camera.yPos - mapY) * deltaDistY;
@@ -66,6 +64,7 @@ class RayCaster {
     }
 
     while (hit == 0) {
+
       if (sideDistX < sideDistY) {
         sideDistX += deltaDistX;
         mapX += stepX;
@@ -194,6 +193,8 @@ class RayCaster {
     perpWallDist = calculatePerpWall(side, mapX, mapY, camera, wallXOffset,
         wallYOffset, stepX, stepY, rayDirX, rayDirY);
 
+    _zBuffer[x] = perpWallDist;
+
     int lineHeight = (Renderer.getCanvasHeight() / perpWallDist).round();
     double drawStart =
         -lineHeight / 2 + (Renderer.getCanvasHeight() / 2).round();
@@ -210,10 +211,21 @@ class RayCaster {
       wallX += worldMap.getDoorOffset(mapX, mapY);
     }
 
+
+
     // Swap texture out for door frame
     if (rayTex == 4) {
       gameEntity = GameEntityRegistry.instance.getSingleton("doorFrame");
     }
+
+
+    renderWall(gameEntity,wallX, side,rayDirX, rayDirY, drawStart,lineHeight, x);
+    renderShadows(perpWallDist, x, drawStart, lineHeight);
+  }
+
+  void renderWall(GameEntity gameEntity,
+      num wallX, int side, num rayDirX, num rayDirY,
+      double drawStart, int lineHeight, int x) {
 
     SpriteComponent sprite;
     Sprite wallTexture;
@@ -223,7 +235,7 @@ class RayCaster {
       wallTexture = sprite.sprite;
     } else if (gameEntity.hasComponent("animatedSprite")) {
       AnimatedSpriteComponent animatedSprite =
-          gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
+      gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
       wallTexture = animatedSprite.currentSprite();
     } else {
       // throw new Error("No gameEntity found");
@@ -239,9 +251,7 @@ class RayCaster {
 
     Renderer.renderClippedImage(wallTexture.image, texX, 0, 1,
         wallTexture.image.height!, x, drawStart, 1, lineHeight);
-    renderShadows(perpWallDist, x, drawStart, lineHeight);
 
-    _zBuffer[x] = perpWallDist;
   }
 
   void renderShadows(num perpWallDist, int x, num drawStart, int lineHeight) {
@@ -288,7 +298,6 @@ class RayCaster {
       order.add(i);
 
       GameEntity gameEntity = gameEntities[i];
-      SpriteComponent sprite;
 
       AnimatedSpriteComponent animatedSprite =
           gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
@@ -388,9 +397,6 @@ class RayCaster {
           drawWidth = 0;
         }
 
-        Renderer.saveContext();
-        Renderer.disabledImageSmoothing();
-
         Renderer.renderClippedImage(
             sprites[order[i]].currentSprite().image,
             drawXStart,
@@ -402,7 +408,6 @@ class RayCaster {
             drawWidth,
             spriteHeight);
 
-        Renderer.restoreContext();
       }
     }
 

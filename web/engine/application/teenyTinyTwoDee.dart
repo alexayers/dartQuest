@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:math';
 
 import '../gameEvent/gameEvent.dart';
 import '../gameEvent/gameEventBus.dart';
@@ -64,26 +65,28 @@ class TeenyTinyTwoDeeApp {
     });
 
     GameEventBus.publish(ScreenChangeEvent(currentScreen));
-    gameLoop(_lastTimestamp);
+    gameLoop();
   }
 
-  void gameLoop(num timestamp) {
+  void gameLoop() {
+    int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
     if (_lastTimestamp < 0) {
-      _lastTimestamp = timestamp;
+      _lastTimestamp = currentTimestamp;
     }
 
-    num deltaTime = timestamp - _lastTimestamp;
+    num deltaTime = currentTimestamp - _lastTimestamp;
 
     if (deltaTime >= _frameDuration) {
-
-      _lastTimestamp += _frameDuration;
 
       _currentGameScreen.logicLoop();
       Renderer.clearScreen();
       _currentGameScreen.renderLoop();
+
+      _lastTimestamp = currentTimestamp;
     }
 
-    window.animationFrame.then((timestamp) => gameLoop(timestamp));
+    logger(LogType.debug, "GameLoop time: ${deltaTime}");
+    window.animationFrame.then((timestamp) => gameLoop());
   }
 }
