@@ -9,7 +9,7 @@ class AnimatedSpriteComponent implements GameComponent {
   int _tick = 0;
   final int _maxTicks = 8;
   int _currentFrame = 0;
-  String currentAction = "default";
+  String _currentAction = "default";
   num _currentRotation = 1;
   num ang = 0;
   final Map<String, List<Sprite>> _frames = {};
@@ -30,6 +30,7 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   Sprite currentSprite() {
+
     return _frames[currentAction]![_currentFrame];
   }
 
@@ -72,6 +73,19 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
    */
+
+   set currentAction(String currentAction) {
+
+     if (currentAction != _currentAction) {
+       _currentAction = currentAction;
+       _currentFrame =0;
+     }
+
+  }
+
+  String get currentAction {
+    return _currentAction;
+  }
 
   void render() {
     Sprite sprite = _frames[currentAction]![_currentFrame];

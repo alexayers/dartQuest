@@ -42,7 +42,7 @@ class MovementSystem implements GameSystem {
       Camera camera = cameraComponent.camera;
 
     } else {
-      animatedSpriteComponent.currentAction = "idle";
+      animatedSpriteComponent.currentAction = "default";
     }
 
     velocityComponent.velX = 0;
@@ -113,6 +113,6 @@ class MovementSystem implements GameSystem {
   @override
   bool shouldRun(GameEntity gameEntity) {
     return gameEntity.hasComponent("velocity") &&
-        gameEntity.hasComponent("position");
+        gameEntity.hasComponent("position") && !gameEntity.hasComponent("dead");
   }
 }

@@ -58,8 +58,14 @@ class GameScreenBase {
 
   num _moveSway = 0;
   bool _updateSway = false;
+
+
   late num _lastXPos = 0;
   late num _lastYPos = 0;
+
+  double _stabProgress = 0;
+  bool _isStabbing = false;
+  double _stabSpeed = 0.2; // Control the speed of stabbing
 
 
   int _moves = 0;
@@ -207,8 +213,12 @@ class GameScreenBase {
 
         _attackTimer.reset();
 
-        if (holdingItem.hasComponent("weapon")) {
+        if (holdingItem.hasComponent("weapon") && !_isStabbing) {
           player.addComponent(AttackActionComponent());
+
+
+          _isStabbing = true;
+          _stabProgress = 0;
         }
 
         _useTool = true;
@@ -281,12 +291,33 @@ class GameScreenBase {
     GameEntity? holdingItem = inventory.getCurrentItem();
 
     if (holdingItem != null) {
-      double xOffset = sin(_moveSway / 2) * 40;
-      double yOffset = cos(_moveSway) * 30;
-
       HoldingSpriteComponent holdingItemSprite =
-          holdingItem.getComponent("holdingSprite") as HoldingSpriteComponent;
-      holdingItemSprite.sprite.render(480 + xOffset, 400 + yOffset, 256, 256);
+      holdingItem.getComponent("holdingSprite") as HoldingSpriteComponent;
+
+      if (!_isStabbing) {
+        double xOffset = sin(_moveSway / 2) * 40;
+        double yOffset = cos(_moveSway) * 30;
+
+        holdingItemSprite.sprite.render(280 + xOffset, 400 + yOffset, 256, 256);
+      } else {
+        if (_isStabbing) {
+          // Update stab progress
+          _stabProgress += _stabSpeed;
+
+          // Oscillate stab progress between 0 and PI
+          if (_stabProgress > pi) {
+            _stabProgress = 0;
+            _isStabbing = false; // Stop stabbing after one motion
+          }
+
+          // Calculate stabbing offset
+          double xOffset = sin(_stabProgress) * 250; // Adjust 100 for the range of motion
+
+          // Render the sprite with stabbing motion
+          holdingItemSprite.sprite.render(280 + xOffset, 320, 256, 256);
+        }
+      }
+
     }
   }
 

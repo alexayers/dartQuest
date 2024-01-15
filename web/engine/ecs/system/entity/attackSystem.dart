@@ -61,7 +61,7 @@ class AttackSystem implements GameSystem {
 
       DistanceComponent distanceComponent = npc.getComponent("distance") as DistanceComponent;
 
-      if (distanceComponent.distance <= 1) {
+      if (distanceComponent.distance <= 1 && npc.hasComponent("health")) {
 
 
 

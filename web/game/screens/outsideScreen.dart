@@ -22,8 +22,7 @@ import '../../engine/primitives/color.dart';
 import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
-import '../../engine/rendering/spriteSheet.dart';
-import '../components/rendering/bobAnimationComponent.dart';
+import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
@@ -227,6 +226,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   List<GameEntity> addNpcs() {
     List<GameEntity> npcs = [];
 
+
     Map<String, List<String>> dogAnimation = {};
 
     dogAnimation["walking"] = [
@@ -236,7 +236,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
       "../../assets/images/npc/dog/dog3.png"
     ];
 
-    dogAnimation["idle"] = [
+    dogAnimation["default"] = [
       "../../assets/images/npc/dog/dogSit1.png",
       "../../assets/images/npc/dog/dogSit2.png",
       "../../assets/images/npc/dog/dogSit1.png",
@@ -253,6 +253,10 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
         .build();
 
     npcs.add(dog);
+
+
+
+    npcs.add(Skeleton.create());
 
     return npcs;
   }
