@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:math';
 
@@ -283,7 +282,7 @@ class RayCaster {
     List<GameEntity> gameEntities = worldMap.worldDefinition.items;
     gameEntities.addAll(worldMap.worldDefinition.npcs);
 
-    List<Sprite> sprites = [];
+    List<AnimatedSpriteComponent> sprites = [];
 
     for (int i = 0; i < gameEntities.length; i++) {
       order.add(i);
@@ -291,14 +290,8 @@ class RayCaster {
       GameEntity gameEntity = gameEntities[i];
       SpriteComponent sprite;
 
-
-      if (gameEntity.hasComponent("sprite")) {
-        sprite = gameEntity.getComponent("sprite") as SpriteComponent;
-      } else {
-        AnimatedSpriteComponent animatedSprite = gameEntity
-            .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        sprite = SpriteComponent(animatedSprite.currentSprite());
-      }
+      AnimatedSpriteComponent animatedSprite =
+          gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
 
       PositionComponent position =
           gameEntity.getComponent("position") as PositionComponent;
@@ -306,17 +299,14 @@ class RayCaster {
           (camera.xPos - position.x) * (camera.xPos - position.x) +
               (camera.yPos - position.y) * (camera.yPos - position.y));
 
-
       DistanceComponent distance =
           gameEntity.getComponent("distance") as DistanceComponent;
       distance.distance = spriteDistance[i];
 
-      sprite.sprite.x = position.x;
-      sprite.sprite.y = position.y;
+      animatedSprite.x = position.x;
+      animatedSprite.y = position.y;
 
-      postCalculationRenderEffects(gameEntity, sprite);
-
-      sprites.add(sprite.sprite);
+      sprites.add(animatedSprite);
     }
 
     combSort(order, spriteDistance);
@@ -383,14 +373,14 @@ class RayCaster {
           }
         }
 
-        double scaleDelta = sprites[order[i]].width / spriteWidth;
+        double scaleDelta = sprites[order[i]].currentSprite().image.width! / spriteWidth;
         int drawXStart = ((clipStartX - drawStartX) * scaleDelta).floor();
         if (drawXStart < 0) {
           drawXStart = 0;
         }
         int drawXEnd = ((clipEndX - clipStartX) * scaleDelta).floor() + 1;
-        if (drawXEnd > sprites[order[i]].width) {
-          drawXEnd = sprites[order[i]].width;
+        if (drawXEnd > sprites[order[i]].currentSprite().image.width!) {
+          drawXEnd = sprites[order[i]].currentSprite().image.width!;
         }
 
         int drawWidth = clipEndX - clipStartX;
@@ -398,18 +388,15 @@ class RayCaster {
           drawWidth = 0;
         }
 
-       // double drawAng = atan2(spriteY, spriteX);
-       // sprites[order[i]].updateSpriteRotation(drawAng);
-
         Renderer.saveContext();
         Renderer.disabledImageSmoothing();
 
         Renderer.renderClippedImage(
-            sprites[order[i]].image,
+            sprites[order[i]].currentSprite().image,
             drawXStart,
             0,
             drawXEnd,
-            sprites[order[i]].height,
+            sprites[order[i]].currentSprite().image.height!,
             clipStartX,
             drawStartY,
             drawWidth,
@@ -418,7 +405,6 @@ class RayCaster {
         Renderer.restoreContext();
       }
     }
-
 
     while (tp >= 0) {
       _transparentWalls[tp].draw();
@@ -479,27 +465,5 @@ class RayCaster {
 
   void flushBuffer() {}
 
-  void postCalculationRenderEffects(GameEntity gameEntity, SpriteComponent sprite) {
 
-    if (gameEntity.hasComponent("bobAnimation")) {
-      BobAnimationComponent bobAnimationComponent = gameEntity.getComponent("bobAnimation") as BobAnimationComponent;
-
-      if (bobAnimationComponent.headingDown) {
-        bobAnimationComponent.yOffset--;
-      } else {
-        bobAnimationComponent.yOffset++;
-      }
-
-      sprite.sprite.x += bobAnimationComponent.yOffset;
-
-      if (bobAnimationComponent.headingDown && bobAnimationComponent.yOffset < -3) {
-        bobAnimationComponent.headingDown = false;
-      } else if (!bobAnimationComponent.headingDown && bobAnimationComponent.yOffset > 3) {
-        bobAnimationComponent.headingDown = true;
-      }
-
-    }
-
-
-  }
 }

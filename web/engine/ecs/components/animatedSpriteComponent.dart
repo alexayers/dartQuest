@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../logger/logger.dart';
 import '../../rendering/renderer.dart';
 import '../../rendering/sprite.dart';
@@ -7,19 +9,19 @@ class AnimatedSpriteComponent implements GameComponent {
   int _tick = 0;
   final int _maxTicks = 8;
   int _currentFrame = 0;
-  String currentAction = "idle";
+  String currentAction = "default";
+  num _currentRotation = 1;
+  num ang = 0;
   final Map<String, List<Sprite>> _frames = {};
-  int _x;
-  int _y;
+  num x;
+  num y;
 
-  AnimatedSpriteComponent(this._x, this._y, Map<String,List<String>> imageFiles) {
+  AnimatedSpriteComponent(this.x, this.y, Map<String,List<String>> imageFiles) {
 
     for (String key in imageFiles.keys) {
       _frames[key] = [];
-      logger(LogType.debug, "$key");
       for (String image in imageFiles[key]!) {
-        logger(LogType.debug, image);
-        _frames[key]!.add(Sprite(_x, _y, image));
+        _frames[key]!.add(Sprite(0, 0, image));
       }
     }
 
@@ -45,9 +47,35 @@ class AnimatedSpriteComponent implements GameComponent {
 
   }
 
+  /*
+  void updateSpriteRotation(double drawAng) {
+    num deltaAng;
+    num newRotation;
+
+    if (_frames.length == 1) {
+      return;
+    } else {
+      deltaAng = drawAng - ang + 2;
+      while (deltaAng < 0) {
+        deltaAng += pi*2;
+      }
+      while (deltaAng > pi*2) {
+        deltaAng -= pi*2;
+      }
+      newRotation = (deltaAng/4).floor();
+    }
+
+    if (_currentRotation != newRotation) { //Only update rotation if it has changed
+      _currentRotation = newRotation;
+      logger(LogType.info, "rotation is now $newRotation");
+    }
+  }
+
+   */
+
   void render() {
     Sprite sprite = _frames[currentAction]![_currentFrame];
-    Renderer.renderImage(sprite.image, _x, _y, sprite.width, sprite.height);
+    Renderer.renderImage(sprite.image, x, y, sprite.width, sprite.height);
 
     _tick++;
 
@@ -65,4 +93,6 @@ class AnimatedSpriteComponent implements GameComponent {
 
   @override
   String get name => "animatedSprite";
+
+
 }

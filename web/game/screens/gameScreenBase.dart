@@ -26,6 +26,7 @@ import '../../engine/ecs/system/entity/damageSystem.dart';
 import '../../engine/ecs/system/entity/interactionSystem.dart';
 import '../../engine/ecs/system/entity/movementSystem.dart';
 import '../../engine/ecs/system/entity/pickUpSystem.dart';
+import '../../engine/ecs/system/entity/timedSoundSystem.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/input/keyboard.dart';
 import '../../engine/input/mouse.dart';
@@ -77,7 +78,8 @@ class GameScreenBase {
       DamageSystem(),
       AttackSystem(),
       AiSystem(),
-      MovementSystem()
+      MovementSystem(),
+      TimedSoundSystem()
     ]);
 
 
@@ -362,8 +364,12 @@ class GameScreenBase {
   void renderLoop() {
 
 
-    for (var system in renderSystems) {
-      system.process();
+    try {
+      for (var system in renderSystems) {
+        system.process();
+      }
+    } catch (e) {
+      logger(LogType.error, e.toString());
     }
 
     for (var gameEntity in translationTable.values) {

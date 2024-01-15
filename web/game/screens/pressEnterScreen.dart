@@ -109,7 +109,7 @@ class PressEnterScreen implements GameScreen {
 
   @override
   void onExit() {
-    _audioManager.play("startGame");
+
   }
 
   @override

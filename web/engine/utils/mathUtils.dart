@@ -1,5 +1,26 @@
 import 'dart:math';
 
+
+class Vector2 {
+  final num x;
+  final num y;
+
+  Vector2(this.x, this.y);
+
+  // Normalize the vector
+  Vector2 normalize() {
+    double length = sqrt(x * x + y * y);
+    return Vector2(x / length, y / length);
+  }
+
+  double get angle => atan2(y, x);
+
+  // Calculate the dot product
+  num dot(Vector2 other) {
+    return x * other.x + y * other.y;
+  }
+}
+
 class MathUtils {
   static num getDecimal(num d) {
     return d - d.floor();

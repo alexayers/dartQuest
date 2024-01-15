@@ -11,6 +11,7 @@ import '../../engine/ecs/components/itemComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
 import '../../engine/ecs/components/properties/canPickUpComponent.dart';
 import '../../engine/ecs/components/spriteComponent.dart';
+import '../../engine/ecs/components/timedSoundComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
@@ -108,7 +109,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     Map<String, List<String>> waterFallAnimation = {};
 
-    waterFallAnimation["idle"] = [
+    waterFallAnimation["default"] = [
       "../../assets/images/outside/waterFall1.png",
       "../../assets/images/outside/waterFall2.png",
       "../../assets/images/outside/waterFall3.png",
@@ -175,7 +176,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     Map<String, List<String>> wellAnimation = {};
 
-    wellAnimation["idle"] = [
+    wellAnimation["default"] = [
       "../../assets/images/outside/well1.png"
     ];
 
@@ -186,17 +187,25 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     translationTable[13] = well;
 
+    GameEntity deadTrees = GameEntityBuilder("deadTrees")
+        .addComponent(WallComponent())
+        .addComponent(SpriteComponent(Sprite(128,128, "../../assets/images/outside/deadTrees.png")))
+        .build();
+
+    translationTable[14] = deadTrees;
+
+
     List<int> grid = [
-      1,1,1,1,1,1,1,1,1,1,
+      1,1,1,1,1,14,1,1,1,1,
       1,0,0,0,0,0,0,0,0,1,
-      1,0,0,0,0,0,0,0,0,1,
+      14,0,0,0,0,0,0,0,0,14,
       1,0,13,0,0,0,0,0,0,1,
       3,0,0,0,0,0,10,8,9,7,
       2,0,0,0,0,0,9,0,0,12,
       3,0,4,0,0,0,9,0,0,9,
-      1,0,0,0,0,0,9,0,0,12,
+      14,0,0,0,0,0,9,0,0,12,
       1,0,0,0,0,0,9,11,11,7,
-      1,1,1,5,6,5,1,1,1,1,
+      1,1,1,5,6,5,1,14,1,1,
     ];
 
     WorldDefinition worldDefinition = WorldDefinition();
@@ -237,6 +246,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     GameEntity dog = GameEntityBuilder("dog")
     .addComponent(DistanceComponent())
     .addComponent(VelocityComponent(0,0))
+    .addComponent(TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
     .addComponent(AiComponent())
     .addComponent(PositionComponent(4, 4))
         .addComponent(AnimatedSpriteComponent(32,32, dogAnimation))
@@ -250,10 +260,13 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   List<GameEntity> addItems() {
     List<GameEntity> items = [];
 
+    Map<String, List<String>> flowerImages = {};
+    flowerImages["default"] = ["../../assets/images/outside/flowers.png"];
+
     GameEntity flowers = GameEntityBuilder("flowers")
         .addComponent(ItemComponent())
         .addComponent(PositionComponent(3.4, 4.9))
-        .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
+        .addComponent(AnimatedSpriteComponent(15,15, flowerImages))
         .build();
 
     items.add(flowers);
@@ -261,7 +274,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     GameEntity flowers2 = GameEntityBuilder("flowers")
         .addComponent(ItemComponent())
         .addComponent(PositionComponent(5.3, 4.2))
-        .addComponent(SpriteComponent(Sprite(15,15, "../../assets/images/outside/flowers.png")))
+        .addComponent(AnimatedSpriteComponent(15,15, flowerImages))
         .build();
 
     items.add(flowers2);
@@ -276,7 +289,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
   @override
   void onEnter() {
-  // audioManager.play("rain");
+  audioManager.play("rain");
   }
 
   @override

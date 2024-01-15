@@ -52,6 +52,8 @@ class Camera {
     }
   }
 
+
+
   void rotate(num angle) {
     Point rDir = MathUtils.rotateVector(xDir, yDir, angle);
     xDir = rDir.x;
@@ -61,4 +63,7 @@ class Camera {
     xPlane = rPlane.x;
     yPlane = rPlane.y;
   }
+
+  Vector2 get position => Vector2(xPos, yPos);
+  Vector2 get direction => Vector2(xDir, yDir);
 }

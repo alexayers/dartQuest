@@ -88,8 +88,6 @@ class InteractionSystem implements GameSystem {
 
     GameEntity gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY);
 
-    logger(LogType.info,"this a door?");
-
     if (gameEntity.hasComponent("door") ||
         gameEntity.hasComponent("pushWall") &&
             _worldMap.getDoorState(checkMapX, checkMapY) == DoorState.closed) {
