@@ -3,6 +3,7 @@ import 'dart:math';
 
 import '../logger/logger.dart';
 import '../primitives/color.dart';
+import '../primitives/rect.dart';
 import '../utils/colorUtils.dart';
 import 'font.dart';
 
@@ -151,6 +152,22 @@ class Renderer {
     _ctx.strokeStyle = ColorUtils.rbgToHex(color.red, color.green, color.blue);
     setAlpha(color.alpha);
     _ctx.stroke();
+  }
+
+  static void batchRect(List<Rect> rectangles, Color color) {
+    _ctx.beginPath();
+
+    setColor(color);
+    setAlpha(color.alpha);
+
+    for (var rect in rectangles) {
+      Renderer._ctx.rect(rect.x, rect.y, rect.width, rect.height);
+    }
+
+
+    _ctx.fill();
+    _ctx.closePath();
+    setAlpha(1);
   }
 
   static void rect(num x, num y, num width, num height, Color color) {

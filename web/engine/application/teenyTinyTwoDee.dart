@@ -86,7 +86,6 @@ class TeenyTinyTwoDeeApp {
       _lastTimestamp = currentTimestamp;
     }
 
-    logger(LogType.debug, "GameLoop time: ${deltaTime}");
     window.animationFrame.then((timestamp) => gameLoop());
   }
 }

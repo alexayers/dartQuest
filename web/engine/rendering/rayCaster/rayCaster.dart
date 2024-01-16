@@ -6,6 +6,7 @@ import '../../ecs/components/positionComponent.dart';
 import '../../ecs/components/spriteComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../ecs/gameEntityRegistry.dart';
+import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../renderer.dart';
 import '../sprite.dart';
@@ -289,7 +290,8 @@ class RayCaster {
   void drawSpritesAndTransparentWalls(Camera camera) {
     List<num> spriteDistance = [];
     List<int> order = [];
-    List<GameEntity> gameEntities = worldMap.worldDefinition.items;
+    List<GameEntity> gameEntities = [];
+    gameEntities.addAll(worldMap.worldDefinition.items);
     gameEntities.addAll(worldMap.worldDefinition.npcs);
 
     List<AnimatedSpriteComponent> sprites = [];
@@ -435,6 +437,7 @@ class RayCaster {
     Renderer.rect(0, Renderer.getCanvasHeight() / 2, Renderer.getCanvasWidth(),
         Renderer.getCanvasHeight(), worldMap.worldDefinition.floorColor);
   }
+
 
   void combSort(List<int> order, List<num> dist) {
     int amount = order.length;

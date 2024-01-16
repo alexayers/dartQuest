@@ -1,5 +1,5 @@
 class GlobalState {
-  static final Map<String, dynamic> _globalState = new Map();
+  static final Map<String, dynamic> _globalState = {};
 
   static createState(String key, dynamic value) {
     _globalState[key] = value;

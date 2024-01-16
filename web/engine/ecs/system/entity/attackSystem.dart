@@ -44,7 +44,7 @@ class AttackSystem implements GameSystem {
   }
 
   bool isNpc(Camera camera) {
-    List<GameEntity> npcs = _worldMap.worldDefinition.items;
+    List<GameEntity> npcs = _worldMap.worldDefinition.npcs;
 
     if (npcs.isEmpty) {
       return false;
@@ -63,7 +63,7 @@ class AttackSystem implements GameSystem {
   }
 
   void attackNpc(Camera camera,GameEntity holdingItem) {
-    List<GameEntity> npcs = _worldMap.worldDefinition.items;
+    List<GameEntity> npcs = _worldMap.worldDefinition.npcs;
 
 
     for (GameEntity npc in npcs) {
