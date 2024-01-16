@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:math';
 
 import '../rendering/rayCaster/worldMap.dart';
 
@@ -33,7 +34,7 @@ class AStar {
     n.idx = idx;
     n.parent = 0;
     n.g = 0;
-    n.h = (_getManhattanDistance(n.x, n.y));
+    n.h = (_getChebyshevDistance(n.x, n.y));
     n.f = (n.g + n.h);
 
     _openSet[idx] = n;
@@ -45,6 +46,10 @@ class AStar {
 
   int _getManhattanDistance(int x, int y) {
     return (((x - _endX).abs() + (y - _endY).abs()) * 10);
+  }
+
+  int _getChebyshevDistance(int x, int y) {
+    return max((x - _endX).abs(), (y - _endY).abs()) * 10;
   }
 
   bool _isOnClosedList(int idx) {
@@ -95,40 +100,13 @@ class AStar {
   }
 
   int _calculateGValue(int x, int y) {
-    // Checking behind me
-    if (x == (_currentNode.x - 1) && y == _currentNode.y - 1) {
-      bool wall = _isWall(_currentNode.x - 1, _currentNode.y - 1);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x) && y == _currentNode.y - 1) {
-      bool wall = _isWall(_currentNode.x, _currentNode.y - 1);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x + 1) && y == _currentNode.y - 1) {
-      bool wall = _isWall(_currentNode.x + 1, _currentNode.y - 1);
-      return _getTileWeight(wall);
-      //
-    } else if (x == (_currentNode.x - 1) && y == _currentNode.y ) {
-      bool wall = _isWall(_currentNode.x - 1, _currentNode.y);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x) && y == _currentNode.y) {
-      bool wall = _isWall(_currentNode.x, _currentNode.y);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x + 1) && y == _currentNode.y) {
-      bool wall = _isWall(_currentNode.x + 1, _currentNode.y);
-      return _getTileWeight(wall);
-      ////
-    } else if (x == (_currentNode.x - 1) && y == _currentNode.y + 1) {
-      bool wall = _isWall(_currentNode.x - 1, _currentNode.y + 1);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x) && y == _currentNode.y + 1) {
-      bool wall = _isWall(_currentNode.x, _currentNode.y + 1);
-      return _getTileWeight(wall);
-    } else if (x == (_currentNode.x + 1) && y == _currentNode.y + 1) {
-      bool wall = _isWall(_currentNode.x + 1, _currentNode.y + 1);
-      return _getTileWeight(wall);
-    } else {
-      return 1400;
-    }
+    bool isDiagonal = (x != _currentNode.x) && (y != _currentNode.y);
+    bool wall = _isWall(x, y);
 
+    int baseCost = isDiagonal ? 14 : 10;
+    int wallPenalty = wall ? 100000 : 0;
+
+    return baseCost + wallPenalty;
   }
 
   int _getTileWeight(bool wall) {
@@ -163,7 +141,7 @@ class AStar {
               n.g = cost;
               n.x = x;
               n.y = y;
-              n.h = (_getManhattanDistance(x, y));
+              n.h = (_getChebyshevDistance(x, y));
               n.idx = idx;
               n.parent = _currentNode.idx;
               n.f = n.g + n.h;

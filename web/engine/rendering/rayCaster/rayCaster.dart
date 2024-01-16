@@ -9,7 +9,6 @@ import '../../ecs/components/positionComponent.dart';
 import '../../ecs/components/spriteComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../ecs/gameEntityRegistry.dart';
-import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../renderer.dart';
 import '../sprite.dart';
@@ -70,7 +69,6 @@ class RayCaster {
     }
 
     while (hit == 0) {
-
       if (sideDistX < sideDistY) {
         sideDistX += deltaDistX;
         mapX += stepX;
@@ -217,22 +215,18 @@ class RayCaster {
       wallX += worldMap.getDoorOffset(mapX, mapY);
     }
 
-
-
     // Swap texture out for door frame
     if (rayTex == 4) {
       gameEntity = GameEntityRegistry.instance.getSingleton("doorFrame");
     }
 
-
-    renderWall(gameEntity,wallX, side,rayDirX, rayDirY, drawStart,lineHeight, x);
+    renderWall(
+        gameEntity, wallX, side, rayDirX, rayDirY, drawStart, lineHeight, x);
     renderShadows(perpWallDist, x, drawStart, lineHeight);
   }
 
-  void renderWall(GameEntity gameEntity,
-      num wallX, int side, num rayDirX, num rayDirY,
-      double drawStart, int lineHeight, int x) {
-
+  void renderWall(GameEntity gameEntity, num wallX, int side, num rayDirX,
+      num rayDirY, double drawStart, int lineHeight, int x) {
     SpriteComponent sprite;
     Sprite wallTexture;
 
@@ -241,7 +235,7 @@ class RayCaster {
       wallTexture = sprite.sprite;
     } else if (gameEntity.hasComponent("animatedSprite")) {
       AnimatedSpriteComponent animatedSprite =
-      gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
+          gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
       wallTexture = animatedSprite.currentSprite();
     } else {
       // throw new Error("No gameEntity found");
@@ -257,7 +251,6 @@ class RayCaster {
 
     Renderer.renderClippedImage(wallTexture.image, texX, 0, 1,
         wallTexture.image.height!, x, drawStart, 1, lineHeight);
-
   }
 
   void renderShadows(num perpWallDist, int x, num drawStart, int lineHeight) {
@@ -291,6 +284,8 @@ class RayCaster {
 
     return perpWallDist;
   }
+
+
 
   void drawSpritesAndTransparentWalls(Camera camera) {
     List<num> spriteDistance = [];
@@ -392,7 +387,8 @@ class RayCaster {
         num angle = math.atan2(spriteY, spriteY);
         sprites[order[i]].updateSpriteRotation(angle);
 
-        double scaleDelta = sprites[order[i]].currentSprite().image.width! / spriteWidth;
+        double scaleDelta =
+            sprites[order[i]].currentSprite().image.width! / spriteWidth;
         int drawXStart = ((clipStartX - drawStartX) * scaleDelta).floor();
         if (drawXStart < 0) {
           drawXStart = 0;
@@ -417,10 +413,8 @@ class RayCaster {
             drawStartY,
             drawWidth,
             spriteHeight);
-
       }
     }
-
 
     while (tp >= 0) {
       _transparentWalls[tp].draw();
@@ -442,21 +436,21 @@ class RayCaster {
           Renderer.getCanvasHeight() / 2, worldMap.worldDefinition.skyColor);
 
       GameEntity player = _gameEntityRegistry.getSingleton("player");
-      CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
+      CameraComponent cameraComponent =
+          player.getComponent("camera") as CameraComponent;
 
       int circleX = 250;
       int circleY = 50;
 
-      double angleToNorth = math.atan2(cameraComponent.camera.yDir, cameraComponent.camera.xDir);
+      double angleToNorth =
+          math.atan2(cameraComponent.camera.yDir, cameraComponent.camera.xDir);
 
-      double adjustedX = circleX - (cameraComponent.camera.xPos * 0.5) ;
-      double adjustedY = circleY - (cameraComponent.camera.yPos * 0.5) + sin(angleToNorth) * 2;
+      double adjustedX = circleX - (cameraComponent.camera.xPos * 0.5);
+      double adjustedY =
+          circleY - (cameraComponent.camera.yPos * 0.5) + sin(angleToNorth) * 2;
 
-      Renderer.circle(adjustedX,adjustedY, 15, Color(200, 200, 200));
+      Renderer.circle(adjustedX, adjustedY, 15, Color(200, 200, 200));
       Renderer.circle(adjustedX, adjustedY, 20, Color(255, 255, 255, 0.015));
-
-
-
     }
 
     // Ground
@@ -468,14 +462,15 @@ class RayCaster {
 
      */
 
-
-    Renderer.rectGradient(0, Renderer.getCanvasHeight() / 2, Renderer.getCanvasWidth(),
-        Renderer.getCanvasHeight(),worldMap.worldDefinition.skyColor.toString(),  worldMap.worldDefinition.floorColor.toString(), );
-
-
-
+    Renderer.rectGradient(
+      0,
+      Renderer.getCanvasHeight() / 2,
+      Renderer.getCanvasWidth(),
+      Renderer.getCanvasHeight(),
+      worldMap.worldDefinition.skyColor.toString(),
+      worldMap.worldDefinition.floorColor.toString(),
+    );
   }
-
 
   void combSort(List<int> order, List<num> dist) {
     int amount = order.length;
@@ -510,6 +505,4 @@ class RayCaster {
   }
 
   void flushBuffer() {}
-
-
 }

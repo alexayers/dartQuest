@@ -231,9 +231,9 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     dogAnimation["walking"] = [
       "../../assets/images/npc/dog/dog1.png",
-      "../../assets/images/npc/dog/dog2.png",
-      "../../assets/images/npc/dog/dog1.png",
-      "../../assets/images/npc/dog/dog3.png"
+  //    "../../assets/images/npc/dog/dog2.png",
+  //    "../../assets/images/npc/dog/dog1.png",
+  //    "../../assets/images/npc/dog/dog3.png"
     ];
 
     dogAnimation["default"] = [
@@ -248,12 +248,24 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
         .addComponent(VelocityComponent(0, 0))
         .addComponent(
             TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
-        .addComponent(AiComponent(MovementStyle.wander, true))
-        .addComponent(PositionComponent(4, 4))
+     //   .addComponent(AiComponent(MovementStyle.wander, true))
+        .addComponent(PositionComponent(1, 8))
         .addComponent(AnimatedSpriteComponent(32, 32, dogAnimation))
         .build();
 
     npcs.add(dog);
+
+    GameEntity dog2 = GameEntityBuilder("dog")
+        .addComponent(DistanceComponent())
+        .addComponent(VelocityComponent(0, 0))
+        .addComponent(
+        TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
+    //   .addComponent(AiComponent(MovementStyle.wander, true))
+        .addComponent(PositionComponent(3, 5))
+        .addComponent(AnimatedSpriteComponent(32, 32, dogAnimation))
+        .build();
+
+    npcs.add(dog2);
 
     npcs.add(Skeleton.create());
 

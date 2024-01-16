@@ -12,6 +12,13 @@ import '../../gameEntity.dart';
 import '../../gameEntityRegistry.dart';
 import '../../gameSystem.dart';
 
+enum MovementDirection {
+  up,
+  down,
+  left,
+  right
+}
+
 class MovementSystem implements GameSystem {
   final WorldMap _worldMap = WorldMap.instance;
   final GameEntityRegistry _gameEntityRegistry = GameEntityRegistry.instance;
@@ -25,6 +32,18 @@ class MovementSystem implements GameSystem {
 
     int tempX = (positionComponent.x + velocityComponent.velX).floor();
     int tempY = (positionComponent.y + velocityComponent.velY).floor();
+
+    MovementDirection movementDirection = MovementDirection.right;
+
+    if (velocityComponent.velX > 0) {
+      movementDirection = MovementDirection.right;
+    } else if (velocityComponent.velX < 0) {
+      movementDirection = MovementDirection.left;
+    } else if (velocityComponent.velY > 0) {
+      movementDirection = MovementDirection.up;
+    } else if (velocityComponent.velY > 0) {
+      movementDirection = MovementDirection.down;
+    }
 
     AnimatedSpriteComponent animatedSpriteComponent = gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
 
@@ -40,7 +59,7 @@ class MovementSystem implements GameSystem {
       //logger(LogType.info, "moving...");
     }
 
-    if (canWalk(tempX, tempY)) {
+    if (canWalk(tempX, tempY, movementDirection)) {
       positionComponent.x += velocityComponent.velX;
       positionComponent.y += velocityComponent.velY;
       animatedSpriteComponent.currentAction = "walking";
@@ -48,8 +67,6 @@ class MovementSystem implements GameSystem {
       GameEntity player = _gameEntityRegistry.getSingleton("player");
       CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
       Camera camera = cameraComponent.camera;
-
-
 
 
     } else {
@@ -62,19 +79,15 @@ class MovementSystem implements GameSystem {
 
 
 
-  bool canWalk(int x, int y) {
+  bool canWalk(int x, int y, MovementDirection movementDirection) {
     int checkMapX = x.floor();
     int checkMapY = y.floor();
-
 
     GameEntity gameEntity = _worldMap.getEntityAtPosition(checkMapX, checkMapY);
 
     if (gameEntity.hasComponent("wall")) {
       return false;
     }
-
-
-
 
     return true;
   }
