@@ -384,6 +384,9 @@ class RayCaster {
           }
         }
 
+        num angle = math.atan2(spriteY, spriteY);
+        sprites[order[i]].updateSpriteRotation(angle);
+
         double scaleDelta = sprites[order[i]].currentSprite().image.width! / spriteWidth;
         int drawXStart = ((clipStartX - drawStartX) * scaleDelta).floor();
         if (drawXStart < 0) {

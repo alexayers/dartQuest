@@ -13,15 +13,17 @@ class AnimatedSpriteComponent implements GameComponent {
   num _currentRotation = 1;
   num ang = 0;
   final Map<String, List<Sprite>> _frames = {};
-  num x;
-  num y;
+  int width;
+  int height;
+  num x = 0;
+  num y = 0;
 
-  AnimatedSpriteComponent(this.x, this.y, Map<String,List<String>> imageFiles) {
-
+  AnimatedSpriteComponent(
+      this.width, this.height, Map<String, List<String>> imageFiles) {
     for (String key in imageFiles.keys) {
       _frames[key] = [];
       for (String image in imageFiles[key]!) {
-        _frames[key]!.add(Sprite(0, 0, image));
+        _frames[key]!.add(Sprite(width, height, image));
       }
     }
 
@@ -30,7 +32,6 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   Sprite currentSprite() {
-
     return _frames[currentAction]![_currentFrame];
   }
 
@@ -45,49 +46,24 @@ class AnimatedSpriteComponent implements GameComponent {
         _currentFrame = 0;
       }
     }
+  }
+
+  void updateSpriteRotation(num drawAng) {
 
   }
 
-  /*
-  void updateSpriteRotation(double drawAng) {
-    num deltaAng;
-    num newRotation;
-
-    if (_frames.length == 1) {
-      return;
-    } else {
-      deltaAng = drawAng - ang + 2;
-      while (deltaAng < 0) {
-        deltaAng += pi*2;
-      }
-      while (deltaAng > pi*2) {
-        deltaAng -= pi*2;
-      }
-      newRotation = (deltaAng/4).floor();
+  set currentAction(String currentAction) {
+    if (currentAction != _currentAction) {
+      _currentAction = currentAction;
+      _currentFrame = 0;
     }
-
-    if (_currentRotation != newRotation) { //Only update rotation if it has changed
-      _currentRotation = newRotation;
-      logger(LogType.info, "rotation is now $newRotation");
-    }
-  }
-
-   */
-
-   set currentAction(String currentAction) {
-
-     if (currentAction != _currentAction) {
-       _currentAction = currentAction;
-       _currentFrame =0;
-     }
-
   }
 
   String get currentAction {
     return _currentAction;
   }
 
-  void render() {
+  void render(int x, int y) {
     Sprite sprite = _frames[currentAction]![_currentFrame];
     Renderer.renderImage(sprite.image, x, y, sprite.width, sprite.height);
 
@@ -107,6 +83,4 @@ class AnimatedSpriteComponent implements GameComponent {
 
   @override
   String get name => "animatedSprite";
-
-
 }

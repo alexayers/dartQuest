@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/doorComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../utils/mathUtils.dart';
@@ -13,6 +14,7 @@ class Camera {
   num fov;
   late num xPlane;
   late num yPlane;
+  final WorldMap _worldMap = WorldMap.instance;
 
   Camera(this.xPos, this.yPos, this.xDir, this.yDir, this.fov) {
     xPlane = MathUtils.rotateVector(xDir, yDir, -pi / 2).x * fov;
@@ -20,9 +22,13 @@ class Camera {
   }
 
   void move(num moveX, num moveY) {
-    WorldMap worldMap = WorldMap.instance;
+
     GameEntity gameEntity =
-        worldMap.getEntityAtPosition((xPos + moveX).floor(), yPos.floor());
+    _worldMap.getEntityAtPosition((xPos + moveX).floor(), yPos.floor());
+
+    if (npcPresent()) {
+      return;
+    }
 
     if (gameEntity.hasComponent("floor")) {
       xPos += moveX;
@@ -37,7 +43,7 @@ class Camera {
     }
 
     gameEntity =
-        worldMap.getEntityAtPosition(xPos.floor(), (yPos + moveY).floor());
+        _worldMap.getEntityAtPosition(xPos.floor(), (yPos + moveY).floor());
 
     if (gameEntity.hasComponent("floor")) {
       yPos += moveY;
@@ -66,4 +72,11 @@ class Camera {
 
   Vector2 get position => Vector2(xPos, yPos);
   Vector2 get direction => Vector2(xDir, yDir);
+
+  bool npcPresent() {
+    bool npcInTheWay = false;
+
+
+    return npcInTheWay;
+  }
 }

@@ -28,18 +28,29 @@ class MovementSystem implements GameSystem {
 
     AnimatedSpriteComponent animatedSpriteComponent = gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
 
+    //logger(logType, msg)
+    
+    if (tempX > positionComponent.x) {
+      logger(LogType.info, "moving...");
+    } else if (tempX < positionComponent.x) {
+    //  logger(LogType.info, "moving...");
+    } else if (tempY > positionComponent.y) {
+   //   logger(LogType.info, "moving...");
+    } else if (tempY < positionComponent.y) {
+      //logger(LogType.info, "moving...");
+    }
+
     if (canWalk(tempX, tempY)) {
       positionComponent.x += velocityComponent.velX;
       positionComponent.y += velocityComponent.velY;
       animatedSpriteComponent.currentAction = "walking";
 
-      num dx = positionComponent.x -tempX;
-      num dy = positionComponent.y - tempY;
-      Vector2 npcDirection = Vector2(dx, dy).normalize();
-
       GameEntity player = _gameEntityRegistry.getSingleton("player");
       CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
       Camera camera = cameraComponent.camera;
+
+
+
 
     } else {
       animatedSpriteComponent.currentAction = "default";

@@ -8,8 +8,8 @@ import '../../engine/ecs/components/floorComponent.dart';
 import '../../engine/ecs/components/itemComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
 import '../../engine/ecs/components/sound/hurtSoundComponent.dart';
-import '../../engine/ecs/components/spriteComponent.dart';
 import '../../engine/ecs/components/sound/timedSoundComponent.dart';
+import '../../engine/ecs/components/spriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
@@ -20,7 +20,6 @@ import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
 import '../components/healthComponent.dart';
-import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
@@ -42,7 +41,8 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     player = GameEntityBuilder("player")
         .addComponent(createInventory())
-        .addComponent(HurtSoundComponent("playerHurt",  "../../assets/sound/playerHurt.wav"))
+        .addComponent(HurtSoundComponent(
+            "playerHurt", "../../assets/sound/playerHurt.wav"))
         .addComponent(HealthComponent(100, 100))
         .addComponent(CameraComponent(camera))
         .addComponent(VelocityComponent(0, 0))
@@ -196,106 +196,16 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     translationTable[14] = deadTrees;
 
     List<int> grid = [
-      1,
-      1,
-      1,
-      1,
-      1,
-      14,
-      1,
-      1,
-      1,
-      1,
-      1,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      1,
-      14,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      14,
-      1,
-      0,
-      13,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      1,
-      3,
-      0,
-      0,
-      0,
-      0,
-      0,
-      10,
-      8,
-      9,
-      7,
-      2,
-      0,
-      0,
-      0,
-      0,
-      0,
-      9,
-      0,
-      0,
-      12,
-      3,
-      0,
-      4,
-      0,
-      0,
-      0,
-      9,
-      0,
-      0,
-      9,
-      14,
-      0,
-      0,
-      0,
-      0,
-      0,
-      9,
-      0,
-      0,
-      12,
-      1,
-      0,
-      0,
-      0,
-      0,
-      0,
-      9,
-      11,
-      11,
-      7,
-      1,
-      1,
-      1,
-      5,
-      6,
-      5,
-      1,
-      14,
-      1,
-      1,
+      1, 1, 1, 1, 1, 14, 1, 1, 1, 1, // no format
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      14, 0, 0, 0, 0, 0, 0, 0, 0, 14,
+      1, 0, 13, 0, 0, 0, 0, 0, 0, 1,
+      3, 0, 0, 0, 0, 0, 10, 8, 9, 7,
+      2, 0, 0, 0, 0, 0, 9, 0, 0, 12,
+      3, 0, 4, 0, 0, 0, 9, 0, 0, 9,
+      14, 0, 0, 0, 0, 0, 9, 0, 0, 12,
+      1, 0, 0, 0, 0, 0, 9, 11, 11, 7,
+      1, 1, 1, 5, 6, 5, 1, 14, 1, 1,
     ];
 
     WorldDefinition worldDefinition = WorldDefinition();
@@ -344,7 +254,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     npcs.add(dog);
 
-    npcs.add(Skeleton.create());
+    // npcs.add(Skeleton.create());
 
     return npcs;
   }

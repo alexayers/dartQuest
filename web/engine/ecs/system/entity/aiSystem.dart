@@ -56,13 +56,13 @@ class AiSystem implements GameSystem {
       List<PathNode> pathNodes = aStar.path;
 
       try {
-        if (pathNodes[0].x >= positionComponent.x.floor()) {
+        if (pathNodes[0].x > positionComponent.x.floor()) {
           velocityComponent.velX = 0.02;
         } else if (pathNodes[0].x < positionComponent.x.floor()) {
           velocityComponent.velX = -0.02;
         }
 
-        if (pathNodes[0].y >= positionComponent.y.floor()) {
+        if (pathNodes[0].y > positionComponent.y.floor()) {
           velocityComponent.velY = 0.02;
         } else if (pathNodes[0].y < positionComponent.y.floor()) {
           velocityComponent.velY = -0.02;

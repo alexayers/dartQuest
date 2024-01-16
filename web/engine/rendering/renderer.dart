@@ -55,7 +55,7 @@ class Renderer {
   }
 
   static void renderImage(
-      ImageElement image, num x, num y, int width, int height,
+      ImageElement image, num x, num y, num width, num height,
       [bool flip = false]) {
     if (flip) {
       _ctx.translate(x + width, y);

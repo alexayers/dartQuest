@@ -96,25 +96,39 @@ class AStar {
 
   int _calculateGValue(int x, int y) {
     // Checking behind me
-    if (x == (_currentNode.x - 1) && y == _currentNode.y) {
-      bool wall = _isWall(_currentNode.x - 1, _currentNode.y);
+    if (x == (_currentNode.x - 1) && y == _currentNode.y - 1) {
+      bool wall = _isWall(_currentNode.x - 1, _currentNode.y - 1);
       return _getTileWeight(wall);
-      // Checking in front of me
-    } else if (x == (_currentNode.x + 1) && y == _currentNode.y) {
-      bool wall = _isWall(_currentNode.x + 1, _currentNode.y);
-      return _getTileWeight(wall);
-      // Checking above me
-    } else if (x == (_currentNode.x) && y == _currentNode.y + 1) {
-      bool wall = _isWall(_currentNode.x, _currentNode.y + 1);
-      return _getTileWeight(wall);
-      // Checking below me
     } else if (x == (_currentNode.x) && y == _currentNode.y - 1) {
       bool wall = _isWall(_currentNode.x, _currentNode.y - 1);
       return _getTileWeight(wall);
-      // Checking diagonal
+    } else if (x == (_currentNode.x + 1) && y == _currentNode.y - 1) {
+      bool wall = _isWall(_currentNode.x + 1, _currentNode.y - 1);
+      return _getTileWeight(wall);
+      //
+    } else if (x == (_currentNode.x - 1) && y == _currentNode.y ) {
+      bool wall = _isWall(_currentNode.x - 1, _currentNode.y);
+      return _getTileWeight(wall);
+    } else if (x == (_currentNode.x) && y == _currentNode.y) {
+      bool wall = _isWall(_currentNode.x, _currentNode.y);
+      return _getTileWeight(wall);
+    } else if (x == (_currentNode.x + 1) && y == _currentNode.y) {
+      bool wall = _isWall(_currentNode.x + 1, _currentNode.y);
+      return _getTileWeight(wall);
+      ////
+    } else if (x == (_currentNode.x - 1) && y == _currentNode.y + 1) {
+      bool wall = _isWall(_currentNode.x - 1, _currentNode.y + 1);
+      return _getTileWeight(wall);
+    } else if (x == (_currentNode.x) && y == _currentNode.y + 1) {
+      bool wall = _isWall(_currentNode.x, _currentNode.y + 1);
+      return _getTileWeight(wall);
+    } else if (x == (_currentNode.x + 1) && y == _currentNode.y + 1) {
+      bool wall = _isWall(_currentNode.x + 1, _currentNode.y + 1);
+      return _getTileWeight(wall);
     } else {
       return 1400;
     }
+
   }
 
   int _getTileWeight(bool wall) {

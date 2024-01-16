@@ -3,8 +3,8 @@ import 'dart:html';
 import 'renderer.dart';
 
 class Sprite {
-  int width;
-  int height;
+  num width;
+  num height;
   num x = 0;
   num y = 0;
   num z = 0;
