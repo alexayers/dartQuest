@@ -55,16 +55,20 @@ class AiSystem implements GameSystem {
     if (aStar.isPathFound()) {
       List<PathNode> pathNodes = aStar.path;
 
+      if (pathNodes.isEmpty) {
+        return;
+      }
+
       try {
-        if (pathNodes[0].x > positionComponent.x.floor()) {
+        if (pathNodes[0].x.floor() > positionComponent.x.floor()) {
           velocityComponent.velX = 0.02;
-        } else if (pathNodes[0].x < positionComponent.x.floor()) {
+        } else if (pathNodes[0].x.floor() < positionComponent.x.floor()) {
           velocityComponent.velX = -0.02;
         }
 
-        if (pathNodes[0].y > positionComponent.y.floor()) {
+        if (pathNodes[0].y.floor() > positionComponent.y.floor()) {
           velocityComponent.velY = 0.02;
-        } else if (pathNodes[0].y < positionComponent.y.floor()) {
+        } else if (pathNodes[0].y.floor() < positionComponent.y.floor()) {
           velocityComponent.velY = -0.02;
         }
       } catch (e) {}

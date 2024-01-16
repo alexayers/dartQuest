@@ -50,7 +50,7 @@ class MovementSystem implements GameSystem {
     //logger(logType, msg)
     
     if (tempX > positionComponent.x) {
-      logger(LogType.info, "moving...");
+    //  logger(LogType.info, "moving...");
     } else if (tempX < positionComponent.x) {
     //  logger(LogType.info, "moving...");
     } else if (tempY > positionComponent.y) {

@@ -152,7 +152,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     npcs.add(dog);
 
 
-  //  npcs.add(Skeleton.create());
+   npcs.add(Skeleton.create());
 
     return npcs;
   }
@@ -178,6 +178,42 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
         .build();
 
     items.add(flowers2);
+
+
+    Map<String, List<String>> graveImages = {};
+    graveImages["default"] = ["../../assets/images/outside/grave.png"];
+
+    GameEntity grave = GameEntityBuilder("grave")
+        .addComponent(ItemComponent())
+        .addComponent(PositionComponent(6, 7))
+        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
+        .build();
+
+    items.add(grave);
+
+    grave = GameEntityBuilder("grave")
+        .addComponent(ItemComponent())
+        .addComponent(PositionComponent(6, 8))
+        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
+        .build();
+
+    items.add(grave);
+
+    grave = GameEntityBuilder("grave")
+        .addComponent(ItemComponent())
+        .addComponent(PositionComponent(5, 8))
+        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
+        .build();
+
+    items.add(grave);
+
+    grave = GameEntityBuilder("grave")
+        .addComponent(ItemComponent())
+        .addComponent(PositionComponent(5, 7))
+        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
+        .build();
+
+    items.add(grave);
 
     return items;
   }

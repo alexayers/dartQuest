@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:math';
 
+import '../logger/logger.dart';
 import '../rendering/rayCaster/worldMap.dart';
 
 class PathNode {
@@ -34,7 +35,7 @@ class AStar {
     n.idx = idx;
     n.parent = 0;
     n.g = 0;
-    n.h = (_getChebyshevDistance(n.x, n.y));
+    n.h = (_getManhattanDistance(n.x, n.y));
     n.f = (n.g + n.h);
 
     _openSet[idx] = n;
@@ -100,13 +101,30 @@ class AStar {
   }
 
   int _calculateGValue(int x, int y) {
-    bool isDiagonal = (x != _currentNode.x) && (y != _currentNode.y);
-    bool wall = _isWall(x, y);
 
-    int baseCost = isDiagonal ? 14 : 10;
-    int wallPenalty = wall ? 100000 : 0;
 
-    return baseCost + wallPenalty;
+    // Checking behind me
+    if (x == (_currentNode.x - 1) && y == _currentNode.y) {
+      bool wall = _isWall(_currentNode.x - 1, _currentNode.y);
+      return _getTileWeight(wall);
+      // Checking in front of me
+    } else if (x == (_currentNode.x + 1) && y == _currentNode.y) {
+      bool wall = _isWall(_currentNode.x + 1, _currentNode.y);
+      return _getTileWeight(wall);
+      // Checking above me
+    } else if (x == (_currentNode.x) && y == _currentNode.y + 1) {
+      bool wall = _isWall(_currentNode.x, _currentNode.y + 1);
+      return _getTileWeight(wall);
+      // Checking below me
+    } else if (x == (_currentNode.x) && y == _currentNode.y - 1) {
+      bool wall = _isWall(_currentNode.x, _currentNode.y - 1);
+      return _getTileWeight(wall);
+      // Checking diagonal
+    } else {
+      return 1400;
+    }
+
+
   }
 
   int _getTileWeight(bool wall) {
@@ -141,7 +159,7 @@ class AStar {
               n.g = cost;
               n.x = x;
               n.y = y;
-              n.h = (_getChebyshevDistance(x, y));
+              n.h = (_getManhattanDistance(x, y));
               n.idx = idx;
               n.parent = _currentNode.idx;
               n.f = n.g + n.h;
@@ -180,6 +198,8 @@ class AStar {
       }
     }
 
+    path = path.reversed.toList();
+
     return pathFound;
   }
 
@@ -191,6 +211,7 @@ class AStar {
       return true;
     }
 
-    return _worldMap.getEntityAtPosition(x, y).hasComponent("wall");
+    return _worldMap.getEntityAtPosition(x, y).hasComponent("wall") ||
+        _worldMap.getEntityAtPosition(x, y).hasComponent("transparent");
   }
 }

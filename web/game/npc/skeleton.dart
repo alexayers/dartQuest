@@ -52,7 +52,7 @@ class Skeleton {
         .addComponent(VelocityComponent(0,0))
         .addComponent(AiComponent(MovementStyle.follow, false))
         .addComponent(HealthComponent(5, 5))
-        .addComponent(PositionComponent(5, 5))
+        .addComponent(PositionComponent(7, 7))
         .addComponent(AnimatedSpriteComponent(8,8, animation))
         .build();
 
