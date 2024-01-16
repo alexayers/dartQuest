@@ -49,7 +49,22 @@ class AnimatedSpriteComponent implements GameComponent {
   }
 
   void updateSpriteRotation(num drawAng) {
+    num deltaAng = drawAng - ang + pi; // Adding pi to adjust the angle range
+    while (deltaAng < 0) {
+      deltaAng += pi * 2;
+    }
+    while (deltaAng > pi * 2) {
+      deltaAng -= pi * 2;
+    }
 
+    // Assuming you want to map the angle to 4 discrete rotation states (0, 1, 2, 3)
+    int totalStates = 4;
+    num newRotation = (deltaAng / (2 * pi) * totalStates).floor();
+
+    if (_currentRotation != newRotation) {
+      _currentRotation = newRotation;
+      logger(LogType.info, _currentRotation.toString());
+    }
   }
 
   set currentAction(String currentAction) {

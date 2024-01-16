@@ -30,7 +30,7 @@ class Camera {
       return;
     }
 
-    if (gameEntity.hasComponent("floor")) {
+    if (gameEntity.hasComponent("floor") || gameEntity.hasComponent("transparent")) {
       xPos += moveX;
     }
 
@@ -45,7 +45,7 @@ class Camera {
     gameEntity =
         _worldMap.getEntityAtPosition(xPos.floor(), (yPos + moveY).floor());
 
-    if (gameEntity.hasComponent("floor")) {
+    if (gameEntity.hasComponent("floor") || gameEntity.hasComponent("transparent")) {
       yPos += moveY;
     }
 

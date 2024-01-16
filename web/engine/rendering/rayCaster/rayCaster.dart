@@ -322,11 +322,16 @@ class RayCaster {
 
     combSort(order, spriteDistance);
 
+
+
     int tp = _transparentWalls.isNotEmpty ? _transparentWalls.length - 1 : -1;
 
     for (int i = 0; i < sprites.length; i++) {
       num spriteX = sprites[order[i]].x - camera.xPos;
       num spriteY = sprites[order[i]].y - camera.yPos;
+
+
+      //sprites[order[i]].updateSpriteRotation(atan2(spriteY, spriteX));
 
       double invDet =
           1.0 / (camera.xPlane * camera.yDir - camera.xDir * camera.yPlane);

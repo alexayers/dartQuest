@@ -42,7 +42,7 @@ class TransparentWall {
 
   void draw() {
     Renderer.saveContext();
-    Renderer.setAlpha(0.45);
+    Renderer.setAlpha(0.8);
 
     num perpDist = getPrepDist(xScreen);
     int lineHeight = (Renderer.getCanvasHeight() / perpDist).round();
