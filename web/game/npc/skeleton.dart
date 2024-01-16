@@ -11,6 +11,7 @@ import '../../engine/ecs/components/sound/useSoundComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
+import '../../engine/rendering/animatedSprite.dart';
 import '../components/healthComponent.dart';
 
 class Skeleton {
@@ -47,6 +48,8 @@ class Skeleton {
           .build()
     );
 
+    AnimatedSprite animatedSprite = AnimatedSprite(animation, 32, 32, "default");
+
     return GameEntityBuilder("skeleton")
         .addComponent(DistanceComponent())
         .addComponent(inventoryComponent)
@@ -54,7 +57,7 @@ class Skeleton {
         .addComponent(AiComponent(MovementStyle.follow, false))
         .addComponent(HealthComponent(5, 5))
         .addComponent(PositionComponent(7, 7))
-        .addComponent(AnimatedSpriteComponent(8,8, animation))
+        .addComponent(AnimatedSpriteComponent(animatedSprite))
         .build();
 
   }

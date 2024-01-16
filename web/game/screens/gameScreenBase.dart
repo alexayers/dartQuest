@@ -245,6 +245,11 @@ class GameScreenBase {
   }
 
   void logicLoop() {
+
+    if (!worldMap.worldLoaded) {
+      return;
+    }
+
     keyboard();
 
     List<GameEntity> gameEntities = [];
@@ -400,6 +405,9 @@ class GameScreenBase {
   @override
   void renderLoop() {
 
+    if (!worldMap.worldLoaded) {
+      return;
+    }
 
     try {
       for (var system in renderSystems) {
@@ -412,17 +420,17 @@ class GameScreenBase {
     for (var gameEntity in translationTable.values) {
 
       if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
+        animatedSpriteComponent.animatedSprite.nextFrame();
       }
     }
 
     for (var gameEntity in worldMap.worldDefinition.npcs) {
       if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
+        animatedSpriteComponent.animatedSprite.nextFrame();
       }
     }
 

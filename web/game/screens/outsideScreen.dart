@@ -17,11 +17,15 @@ import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/primitives/color.dart';
+import '../../engine/rendering/animatedSprite.dart';
 import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
 import '../../engine/rendering/spriteSheet.dart';
 import '../components/healthComponent.dart';
+import '../items/flowers.dart';
+import '../items/grave.dart';
+import '../npc/dog.dart';
 import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
@@ -124,33 +128,9 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   List<GameEntity> addNpcs() {
     List<GameEntity> npcs = [];
 
-    Map<String, List<String>> dogAnimation = {};
 
-    dogAnimation["walking"] = [
-      "../../assets/images/npc/dog/dog1.png",
-      "../../assets/images/npc/dog/dog2.png",
-      "../../assets/images/npc/dog/dog1.png",
-      "../../assets/images/npc/dog/dog3.png"
-    ];
 
-    dogAnimation["default"] = [
-      "../../assets/images/npc/dog/dogSit1.png",
-      "../../assets/images/npc/dog/dogSit2.png",
-      "../../assets/images/npc/dog/dogSit1.png",
-      "../../assets/images/npc/dog/dogSit3.png"
-    ];
-
-    GameEntity dog = GameEntityBuilder("dog")
-        .addComponent(DistanceComponent())
-        .addComponent(VelocityComponent(0, 0))
-        .addComponent(
-            TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
-        .addComponent(AiComponent(MovementStyle.wander, true))
-        .addComponent(PositionComponent(3, 3))
-        .addComponent(AnimatedSpriteComponent(32, 32, dogAnimation))
-        .build();
-
-    npcs.add(dog);
+    npcs.add(Dog.create());
 
 
    npcs.add(Skeleton.create());
@@ -161,60 +141,8 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
   List<GameEntity> addItems() {
     List<GameEntity> items = [];
 
-    Map<String, List<String>> flowerImages = {};
-    flowerImages["default"] = ["../../assets/images/outside/flowers.png"];
-
-    GameEntity flowers = GameEntityBuilder("flowers")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(3.4, 4.9))
-        .addComponent(AnimatedSpriteComponent(15, 15, flowerImages))
-        .build();
-
-    items.add(flowers);
-
-    GameEntity flowers2 = GameEntityBuilder("flowers")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(5.3, 4.2))
-        .addComponent(AnimatedSpriteComponent(15, 15, flowerImages))
-        .build();
-
-    items.add(flowers2);
-
-
-    Map<String, List<String>> graveImages = {};
-    graveImages["default"] = ["../../assets/images/outside/grave.png"];
-
-    GameEntity grave = GameEntityBuilder("grave")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(6, 7))
-        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
-        .build();
-
-    items.add(grave);
-
-    grave = GameEntityBuilder("grave")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(6, 8))
-        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
-        .build();
-
-    items.add(grave);
-
-    grave = GameEntityBuilder("grave")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(5, 8))
-        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
-        .build();
-
-    items.add(grave);
-
-    grave = GameEntityBuilder("grave")
-        .addComponent(ItemComponent())
-        .addComponent(PositionComponent(5, 7))
-        .addComponent(AnimatedSpriteComponent(15, 15, graveImages))
-        .build();
-
-    items.add(grave);
+    items.add(Flower.create());
+    items.add(Grave.create());
 
     return items;
   }

@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:math' as math;
 import 'dart:math';
 
@@ -228,29 +229,29 @@ class RayCaster {
   void renderWall(GameEntity gameEntity, num wallX, int side, num rayDirX,
       num rayDirY, double drawStart, int lineHeight, int x) {
     SpriteComponent sprite;
-    Sprite wallTexture;
+    ImageElement wallTexture;
 
     if (gameEntity.hasComponent("sprite")) {
       sprite = gameEntity.getComponent("sprite") as SpriteComponent;
-      wallTexture = sprite.sprite;
+      wallTexture = sprite.sprite.image;
     } else if (gameEntity.hasComponent("animatedSprite")) {
-      AnimatedSpriteComponent animatedSprite =
+      AnimatedSpriteComponent animatedSpriteComponent =
           gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
-      wallTexture = animatedSprite.currentSprite();
+      wallTexture = animatedSpriteComponent.animatedSprite.currentImage();
     } else {
       // throw new Error("No gameEntity found");
       return;
     }
 
-    int texX = (wallX * wallTexture.image.width!).floor();
+    int texX = (wallX * wallTexture.width!).floor();
     if (side == 0 && rayDirX > 0) {
-      texX = wallTexture.image.width! - texX - 1;
+      texX = wallTexture.width! - texX - 1;
     } else if (side == 1 && rayDirY < 0) {
-      texX = wallTexture.image.width! - texX - 1;
+      texX = wallTexture.width! - texX - 1;
     }
 
-    Renderer.renderClippedImage(wallTexture.image, texX, 0, 1,
-        wallTexture.image.height!, x, drawStart, 1, lineHeight);
+    Renderer.renderClippedImage(wallTexture, texX, 0, 1,
+        wallTexture.height!, x, drawStart, 1, lineHeight);
   }
 
   void renderShadows(num perpWallDist, int x, num drawStart, int lineHeight) {
@@ -301,7 +302,7 @@ class RayCaster {
 
       GameEntity gameEntity = gameEntities[i];
 
-      AnimatedSpriteComponent animatedSprite =
+      AnimatedSpriteComponent animatedSpriteComponent =
           gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
 
       PositionComponent position =
@@ -314,10 +315,10 @@ class RayCaster {
           gameEntity.getComponent("distance") as DistanceComponent;
       distance.distance = spriteDistance[i];
 
-      animatedSprite.x = position.x;
-      animatedSprite.y = position.y;
+      animatedSpriteComponent.animatedSprite.x = position.x;
+      animatedSpriteComponent.animatedSprite.y = position.y;
 
-      sprites.add(animatedSprite);
+      sprites.add(animatedSpriteComponent);
     }
 
     combSort(order, spriteDistance);
@@ -327,8 +328,8 @@ class RayCaster {
     int tp = _transparentWalls.isNotEmpty ? _transparentWalls.length - 1 : -1;
 
     for (int i = 0; i < sprites.length; i++) {
-      num spriteX = sprites[order[i]].x - camera.xPos;
-      num spriteY = sprites[order[i]].y - camera.yPos;
+      num spriteX = sprites[order[i]].animatedSprite.x - camera.xPos;
+      num spriteY = sprites[order[i]].animatedSprite.y - camera.yPos;
 
 
       //sprites[order[i]].updateSpriteRotation(atan2(spriteY, spriteX));
@@ -389,18 +390,18 @@ class RayCaster {
           }
         }
 
-        num angle = math.atan2(spriteY, spriteY);
-        sprites[order[i]].updateSpriteRotation(angle);
+       // num angle = math.atan2(spriteY, spriteY);
+      //  sprites[order[i]].updateSpriteRotation(angle);
 
         double scaleDelta =
-            sprites[order[i]].currentSprite().image.width! / spriteWidth;
+            sprites[order[i]].animatedSprite.currentImage().width! / spriteWidth;
         int drawXStart = ((clipStartX - drawStartX) * scaleDelta).floor();
         if (drawXStart < 0) {
           drawXStart = 0;
         }
         int drawXEnd = ((clipEndX - clipStartX) * scaleDelta).floor() + 1;
-        if (drawXEnd > sprites[order[i]].currentSprite().image.width!) {
-          drawXEnd = sprites[order[i]].currentSprite().image.width!;
+        if (drawXEnd > sprites[order[i]].animatedSprite.currentImage().width!) {
+          drawXEnd = sprites[order[i]].animatedSprite.currentImage().width!;
         }
 
         int drawWidth = clipEndX - clipStartX;
@@ -409,11 +410,11 @@ class RayCaster {
         }
 
         Renderer.renderClippedImage(
-            sprites[order[i]].currentSprite().image,
+            sprites[order[i]].animatedSprite.currentImage(),
             drawXStart,
             0,
             drawXEnd,
-            sprites[order[i]].currentSprite().image.height!,
+            sprites[order[i]].animatedSprite.currentImage().height!,
             clipStartX,
             drawStartY,
             drawWidth,

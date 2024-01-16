@@ -141,26 +141,26 @@ class TestScreen extends GameScreenBase implements GameScreen {
 
     for (var gameEntity in translationTable.values) {
       if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
+        animatedSpriteComponent.animatedSprite.nextFrame();
       }
     }
 
 
     for (var gameEntity in worldMap.worldDefinition.items) {
       if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
+        animatedSpriteComponent.animatedSprite.nextFrame();
       }
     }
 
     for (var gameEntity in worldMap.worldDefinition.npcs) {
       if (gameEntity.hasComponent("animatedSprite")) {
-        AnimatedSpriteComponent animatedSprite = gameEntity
+        AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSprite.nextFrame();
+        animatedSpriteComponent.animatedSprite.nextFrame();
       }
     }
 

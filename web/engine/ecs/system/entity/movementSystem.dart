@@ -62,7 +62,7 @@ class MovementSystem implements GameSystem {
     if (canWalk(tempX, tempY, movementDirection)) {
       positionComponent.x += velocityComponent.velX;
       positionComponent.y += velocityComponent.velY;
-      animatedSpriteComponent.currentAction = "walking";
+      animatedSpriteComponent.animatedSprite.currentAction = "walking";
 
       GameEntity player = _gameEntityRegistry.getSingleton("player");
       CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
@@ -70,7 +70,7 @@ class MovementSystem implements GameSystem {
 
 
     } else {
-      animatedSpriteComponent.currentAction = "default";
+      animatedSpriteComponent.animatedSprite.currentAction = "default";
     }
 
     velocityComponent.velX = 0;

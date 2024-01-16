@@ -32,7 +32,7 @@ class DamageSystem implements GameSystem {
         gameEntity.removeComponent("health");
         AnimatedSpriteComponent animatedSpriteComponent = gameEntity
             .getComponent("animatedSprite") as AnimatedSpriteComponent;
-        animatedSpriteComponent.currentAction = "dead";
+        animatedSpriteComponent.animatedSprite.currentAction = "dead";
 
         logger(LogType.debug, "${gameEntity.name} is dead.");
       }

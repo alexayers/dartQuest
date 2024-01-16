@@ -17,7 +17,6 @@ class WorldDefinition {
   late Color skyColor;
   late Color floorColor;
   late Map<int, GameEntity> translationTable;
-  late SpriteSheet spriteSheet;
   late num lightRange;
   late int width;
   late int height;
@@ -31,7 +30,7 @@ class WorldMap {
   List<num> _doorOffsets = [];
   List<DoorState> _doorStates = [];
   late WorldDefinition worldDefinition;
-  bool _worldLoaded = false;
+  bool worldLoaded = false;
 
   WorldMap._privateConstructor();
 
@@ -58,12 +57,12 @@ class WorldMap {
       _doorStates.add(DoorState.closed);
     }
 
-    _worldLoaded = true;
+    worldLoaded = true;
     logger(LogType.info, "The map has been loaded.");
   }
 
   void moveDoors() {
-    if (!_worldLoaded) {
+    if (!worldLoaded) {
       return;
     }
 
