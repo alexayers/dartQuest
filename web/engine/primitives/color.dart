@@ -1,3 +1,5 @@
+import '../utils/colorUtils.dart';
+
 class Color {
   int red;
   int blue;
@@ -5,6 +7,11 @@ class Color {
   num alpha;
 
   Color(this.red, this.green, this.blue, [this.alpha = 1.0]);
+
+  @override
+  String toString() {
+    return ColorUtils.rbgToHex(red, green, blue);
+  }
 }
 
 class Colors {

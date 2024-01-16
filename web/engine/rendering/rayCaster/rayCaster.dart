@@ -1,6 +1,9 @@
 import 'dart:math' as math;
+import 'dart:math';
 
+import '../../../game/systems/rendering/cloudRenderSystem.dart';
 import '../../ecs/components/animatedSpriteComponent.dart';
+import '../../ecs/components/cameraComponent.dart';
 import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/positionComponent.dart';
 import '../../ecs/components/spriteComponent.dart';
@@ -19,6 +22,8 @@ class RayCaster {
   final List<num> _zBuffer = List.filled(1024, 0.0);
   final List<TransparentWall> _transparentWalls = [];
   final WorldMap worldMap = WorldMap.instance;
+  final GameEntityRegistry _gameEntityRegistry = GameEntityRegistry.instance;
+  final CloudRenderSystem cloudRenderSystem = CloudRenderSystem();
 
   RayCaster() {
     for (int x = 0; x < Renderer.getCanvasWidth(); x++) {
@@ -416,6 +421,7 @@ class RayCaster {
       }
     }
 
+
     while (tp >= 0) {
       _transparentWalls[tp].draw();
       tp--;
@@ -434,11 +440,40 @@ class RayCaster {
       // Sky
       Renderer.rect(0, 0, Renderer.getCanvasWidth(),
           Renderer.getCanvasHeight() / 2, worldMap.worldDefinition.skyColor);
+
+      GameEntity player = _gameEntityRegistry.getSingleton("player");
+      CameraComponent cameraComponent = player.getComponent("camera") as CameraComponent;
+
+      int circleX = 250;
+      int circleY = 50;
+
+      double angleToNorth = math.atan2(cameraComponent.camera.yDir, cameraComponent.camera.xDir);
+
+      double adjustedX = circleX - (cameraComponent.camera.xPos * 0.5) ;
+      double adjustedY = circleY - (cameraComponent.camera.yPos * 0.5) + sin(angleToNorth) * 2;
+
+      Renderer.circle(adjustedX,adjustedY, 15, Color(200, 200, 200));
+      Renderer.circle(adjustedX, adjustedY, 20, Color(255, 255, 255, 0.015));
+
+
+
     }
 
     // Ground
+
+    /*
     Renderer.rect(0, Renderer.getCanvasHeight() / 2, Renderer.getCanvasWidth(),
         Renderer.getCanvasHeight(), worldMap.worldDefinition.floorColor);
+
+
+     */
+
+
+    Renderer.rectGradient(0, Renderer.getCanvasHeight() / 2, Renderer.getCanvasWidth(),
+        Renderer.getCanvasHeight(),worldMap.worldDefinition.skyColor.toString(),  worldMap.worldDefinition.floorColor.toString(), );
+
+
+
   }
 
 

@@ -20,6 +20,7 @@ import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
 import '../components/healthComponent.dart';
+import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
@@ -211,7 +212,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     WorldDefinition worldDefinition = WorldDefinition();
     worldDefinition.skyColor = Color(16, 29, 52);
     worldDefinition.floorColor = Color(38, 90, 42);
-    worldDefinition.lightRange = 10;
+    worldDefinition.lightRange = 8;
     worldDefinition.grid = grid;
     worldDefinition.items = addItems();
     worldDefinition.npcs = addNpcs();
@@ -254,7 +255,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     npcs.add(dog);
 
-    // npcs.add(Skeleton.create());
+    npcs.add(Skeleton.create());
 
     return npcs;
   }

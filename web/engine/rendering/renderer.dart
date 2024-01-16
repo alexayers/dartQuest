@@ -170,6 +170,22 @@ class Renderer {
     setAlpha(1);
   }
 
+  static void rectGradient(num x, num y, num width, num height, String startColor, String endColor) {
+
+      num midY = getCanvasHeight() / 2;
+      num height = getCanvasHeight();
+
+      // Create a vertical linear gradient
+      var gradient = _ctx.createLinearGradient(0, midY, 0, height);
+      gradient.addColorStop(0, startColor);
+      gradient.addColorStop(1, endColor);
+
+      // Use the gradient to fill the rectangle
+      _ctx.fillStyle = gradient;
+      _ctx.fillRect(0, midY, getCanvasWidth(), height);
+
+  }
+
   static void rect(num x, num y, num width, num height, Color color) {
     _ctx.beginPath();
 
