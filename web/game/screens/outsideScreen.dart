@@ -20,6 +20,7 @@ import '../../engine/primitives/color.dart';
 import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
+import '../../engine/rendering/spriteSheet.dart';
 import '../components/healthComponent.dart';
 import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';

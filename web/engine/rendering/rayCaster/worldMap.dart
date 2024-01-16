@@ -4,6 +4,7 @@ import '../../ecs/gameEntity.dart';
 import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../sprite.dart';
+import '../spriteSheet.dart';
 import 'renderPerformance.dart';
 
 enum DoorState { closed, opening, open, closing }
@@ -16,6 +17,7 @@ class WorldDefinition {
   late Color skyColor;
   late Color floorColor;
   late Map<int, GameEntity> translationTable;
+  late SpriteSheet spriteSheet;
   late num lightRange;
   late int width;
   late int height;
