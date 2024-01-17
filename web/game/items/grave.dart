@@ -1,6 +1,6 @@
 
 
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/itemComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';

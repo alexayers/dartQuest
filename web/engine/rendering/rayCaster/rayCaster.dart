@@ -3,16 +3,16 @@ import 'dart:math' as math;
 import 'dart:math';
 
 import '../../../game/systems/rendering/cloudRenderSystem.dart';
-import '../../ecs/components/animatedSpriteComponent.dart';
+import '../../ecs/components/rendering/spriteSheetComponent.dart';
+import '../../ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../ecs/components/cameraComponent.dart';
 import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/positionComponent.dart';
-import '../../ecs/components/spriteComponent.dart';
+import '../../ecs/components/rendering/spriteComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../ecs/gameEntityRegistry.dart';
 import '../../primitives/color.dart';
 import '../renderer.dart';
-import '../sprite.dart';
 import 'camera.dart';
 import 'transparentWall.dart';
 import 'worldMap.dart';
@@ -230,6 +230,8 @@ class RayCaster {
       num rayDirY, double drawStart, int lineHeight, int x) {
     SpriteComponent sprite;
     ImageElement wallTexture;
+    bool spriteSheet= false;
+    SpriteSheetComponent? spriteSheetComponent;
 
     if (gameEntity.hasComponent("sprite")) {
       sprite = gameEntity.getComponent("sprite") as SpriteComponent;
@@ -238,20 +240,43 @@ class RayCaster {
       AnimatedSpriteComponent animatedSpriteComponent =
           gameEntity.getComponent("animatedSprite") as AnimatedSpriteComponent;
       wallTexture = animatedSpriteComponent.animatedSprite.currentImage();
+    } else if (gameEntity.hasComponent("spriteSheet")) {
+      spriteSheetComponent =
+      gameEntity.getComponent("spriteSheet") as SpriteSheetComponent;
+      wallTexture = spriteSheetComponent.spriteSheet.image;
+
+
+      spriteSheet = true;
     } else {
       // throw new Error("No gameEntity found");
       return;
     }
 
-    int texX = (wallX * wallTexture.width!).floor();
-    if (side == 0 && rayDirX > 0) {
-      texX = wallTexture.width! - texX - 1;
-    } else if (side == 1 && rayDirY < 0) {
-      texX = wallTexture.width! - texX - 1;
+
+
+    if (!spriteSheet) {
+
+      int texX = (wallX * wallTexture.width!).floor();
+      if (side == 0 && rayDirX > 0) {
+        texX = wallTexture.width! - texX - 1;
+      } else if (side == 1 && rayDirY < 0) {
+        texX = wallTexture.width! - texX - 1;
+      }
+
+      Renderer.renderClippedImage(wallTexture, texX, 0, 1,
+          wallTexture.height!, x, drawStart, 1, lineHeight);
+    } else {
+
+      int totalRows = 1;
+      int totalColumns=spriteSheetComponent!.spriteSheet.spriteSheetDefinition.spriteWidth;
+      int xPosition = spriteSheetComponent!.spriteSheet.spriteMap[spriteSheetComponent!.spriteName]!;
+
+      int texX = (wallX * (wallTexture.width!/totalColumns) + (16*xPosition)).floor();
+
+      Renderer.renderClippedImage(wallTexture, texX, 0, 1,
+          (wallTexture.height!/totalRows), x, drawStart, 1, lineHeight);
     }
 
-    Renderer.renderClippedImage(wallTexture, texX, 0, 1,
-        wallTexture.height!, x, drawStart, 1, lineHeight);
   }
 
   void renderShadows(num perpWallDist, int x, num drawStart, int lineHeight) {

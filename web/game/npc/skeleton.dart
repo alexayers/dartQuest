@@ -1,8 +1,7 @@
 
 
-import '../../engine/ecs/components/SpriteSheetComponent.dart';
 import '../../engine/ecs/components/ai/aiComponent.dart';
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/damageComponent.dart';
 import '../../engine/ecs/components/distanceComponent.dart';
 import '../../engine/ecs/components/inventoryComponent.dart';

@@ -1,1 +1,1 @@
-enum Screens { pressEnter, testScreen, mainMenu, outside }
+enum Screens { pressEnter, testScreen, mainMenu, outside, renderTest }

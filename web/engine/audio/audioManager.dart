@@ -1,5 +1,4 @@
 import '../gameEvent/gameEvent.dart';
-import '../logger/logger.dart';
 import 'audioFile.dart';
 
 class AudioManager {

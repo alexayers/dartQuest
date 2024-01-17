@@ -1,7 +1,6 @@
 import 'dart:core';
 import 'dart:math';
 
-import '../logger/logger.dart';
 import '../rendering/rayCaster/worldMap.dart';
 
 class PathNode {

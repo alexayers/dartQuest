@@ -24,29 +24,27 @@ class SpriteLocation {
 
 class SpriteSheet {
 
-  late final SpriteSheetDefinition _spriteSheetDefinition;
-  final Map<String, SpriteLocation> _spriteMap = {};
-  final ImageElement _image = ImageElement();
+  late final SpriteSheetDefinition spriteSheetDefinition;
+  final Map<String, int> spriteMap = {};
+  final ImageElement image = ImageElement();
 
-  void load(SpriteSheetDefinition spriteSheetDefinition) {
+  SpriteSheet(SpriteSheetDefinition spriteSheetDefinition) {
     int offsetX = 0;
     int offsetY = 0;
     int spriteCount = 0;
 
-    _spriteSheetDefinition = spriteSheetDefinition;
-    _image.src = spriteSheetDefinition.spriteSheet;
+    this.spriteSheetDefinition = spriteSheetDefinition;
+    image.src = spriteSheetDefinition.spriteSheet;
 
-    _image.onLoad.listen((event) {
-      int width = _image.width!;
+    image.onLoad.listen((event) {
+      int width = image.width!;
       int spritesPerRow = (width / spriteSheetDefinition.spriteWidth).floor();
+      int i = 0;
 
       for (String spriteName in spriteSheetDefinition.sprites) {
-        _spriteMap[spriteName] = SpriteLocation(
-            offsetX,
-            offsetY,
-            offsetX + spriteSheetDefinition.spriteWidth,
-            offsetY + spriteSheetDefinition.spriteHeight);
+        spriteMap[spriteName] = i;
         spriteCount++;
+        i++;
 
         logger(LogType.info, "Loaded $spriteName at ${offsetX}x$offsetY");
 
@@ -61,12 +59,15 @@ class SpriteSheet {
     });
   }
 
+  /*
   void render(String spriteName, num x, num y, int width, int height, [bool flip = false]) {
 
     SpriteLocation spriteLocation = _spriteMap[spriteName]!;
-    Renderer.renderClippedImage(_image, spriteLocation.lx, spriteLocation.ly, _spriteSheetDefinition.spriteWidth, _spriteSheetDefinition.spriteHeight,
+    Renderer.renderClippedImage(image, spriteLocation.lx, spriteLocation.ly, spriteSheetDefinition.spriteWidth, spriteSheetDefinition.spriteHeight,
         x, y, width, height);
 
   }
+
+   */
 
 }

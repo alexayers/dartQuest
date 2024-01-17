@@ -1,7 +1,3 @@
-import 'dart:html';
-import 'dart:typed_data';
-
-import '../../../engine/ecs/components/cameraComponent.dart';
 import '../../../engine/ecs/gameEntity.dart';
 import '../../../engine/ecs/gameEntityRegistry.dart';
 import '../../../engine/ecs/gameRenderSystem.dart';

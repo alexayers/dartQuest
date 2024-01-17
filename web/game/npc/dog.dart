@@ -1,7 +1,7 @@
 
 
 import '../../engine/ecs/components/ai/aiComponent.dart';
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/distanceComponent.dart';
 import '../../engine/ecs/components/positionComponent.dart';
 import '../../engine/ecs/components/sound/timedSoundComponent.dart';

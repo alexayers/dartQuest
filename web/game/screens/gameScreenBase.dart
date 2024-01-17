@@ -2,7 +2,7 @@ import 'dart:math';
 
 import '../../engine/application/gameScreenOverlay.dart';
 import '../../engine/audio/audioManager.dart';
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/damageComponent.dart';
 import '../../engine/ecs/components/holdingSpriteComponent.dart';
 import '../../engine/ecs/components/interactions/attackActionComponent.dart';

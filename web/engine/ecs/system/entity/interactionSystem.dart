@@ -1,8 +1,6 @@
-import '../../../logger/logger.dart';
 import '../../../rendering/rayCaster/camera.dart';
 import '../../../rendering/rayCaster/worldMap.dart';
 import '../../components/cameraComponent.dart';
-import '../../components/distanceComponent.dart';
 import '../../components/properties/canInteractComponent.dart';
 import '../../gameEntity.dart';
 import '../../gameSystem.dart';

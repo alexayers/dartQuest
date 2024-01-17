@@ -4,7 +4,6 @@ import '../../ecs/gameEntity.dart';
 import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../sprite.dart';
-import '../spriteSheet.dart';
 import 'renderPerformance.dart';
 
 enum DoorState { closed, opening, open, closing }

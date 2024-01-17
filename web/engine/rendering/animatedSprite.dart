@@ -2,7 +2,6 @@
 import 'dart:html';
 
 import 'renderer.dart';
-import 'sprite.dart';
 
 class AnimatedSprite {
   int _tick = 0;
@@ -72,6 +71,6 @@ class AnimatedSprite {
   }
 
   ImageElement currentImage() {
-    return _frames[_currentAction]![_currentFrame]!;
+    return _frames[_currentAction]![_currentFrame];
   }
 }

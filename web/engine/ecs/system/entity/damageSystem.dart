@@ -3,7 +3,7 @@
 import '../../../../game/components/healthComponent.dart';
 import '../../../audio/audioManager.dart';
 import '../../../logger/logger.dart';
-import '../../components/animatedSpriteComponent.dart';
+import '../../components/rendering/animatedSpriteComponent.dart';
 import '../../components/deadComponent.dart';
 import '../../components/properties/takeDamageComponent.dart';
 import '../../components/sound/hurtSoundComponent.dart';

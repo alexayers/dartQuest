@@ -4,13 +4,10 @@
 import '../../../engine/application/gameScreenOverlay.dart';
 import '../../../engine/ecs/gameEntity.dart';
 import '../../../engine/ecs/gameEntityRegistry.dart';
-import '../../../engine/logger/logger.dart';
 import '../../../engine/primitives/color.dart';
 import '../../../engine/rendering/animatedSprite.dart';
 import '../../../engine/rendering/rayCaster/worldMap.dart';
 import '../../../engine/rendering/renderer.dart';
-import '../../../engine/utils/mathUtils.dart';
-import '../../components/healthComponent.dart';
 
 class UiOverlayScreen implements GameScreenOverlay {
 

@@ -1,10 +1,9 @@
 import '../engine/application/gameScreen.dart';
 import '../engine/application/teenyTinyTwoDee.dart';
-import 'screens/mainMenuScreen.dart';
 import 'screens/outsideScreen.dart';
 import 'screens/pressEnterScreen.dart';
+import 'screens/renderTestScreen.dart';
 import 'screens/screens.dart';
-import 'screens/testScreen.dart';
 
 class Game extends TeenyTinyTwoDeeApp {
   void init() {
@@ -12,8 +11,8 @@ class Game extends TeenyTinyTwoDeeApp {
 
     gameScreens[Screens.pressEnter.name] = PressEnterScreen();
     gameScreens[Screens.outside.name] = OutsideScreen();
+    gameScreens[Screens.renderTest.name] = RenderTestScreen();
 
-
-    super.run(gameScreens, Screens.pressEnter.name);
+    super.run(gameScreens, Screens.outside.name);
   }
 }

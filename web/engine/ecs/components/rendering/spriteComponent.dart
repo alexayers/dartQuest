@@ -1,5 +1,5 @@
-import '../../rendering/sprite.dart';
-import '../gameComponent.dart';
+import '../../../rendering/sprite.dart';
+import '../../gameComponent.dart';
 
 class SpriteComponent implements GameComponent {
   Sprite sprite;

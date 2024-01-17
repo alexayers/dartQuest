@@ -1,10 +1,6 @@
-import 'dart:math';
-
-import '../../../logger/logger.dart';
 import '../../../rendering/rayCaster/camera.dart';
 import '../../../rendering/rayCaster/worldMap.dart';
-import '../../../utils/mathUtils.dart';
-import '../../components/animatedSpriteComponent.dart';
+import '../../components/rendering/animatedSpriteComponent.dart';
 import '../../components/cameraComponent.dart';
 import '../../components/positionComponent.dart';
 import '../../components/velocityComponent.dart';

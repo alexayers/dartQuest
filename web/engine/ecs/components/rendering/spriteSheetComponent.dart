@@ -1,5 +1,5 @@
-import '../../rendering/spriteSheet.dart';
-import '../gameComponent.dart';
+import '../../../rendering/spriteSheet.dart';
+import '../../gameComponent.dart';
 
 class SpriteSheetComponent implements GameComponent {
 

@@ -1,32 +1,23 @@
 import '../../engine/application/gameScreen.dart';
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/cameraComponent.dart';
-import '../../engine/ecs/components/distanceComponent.dart';
 import '../../engine/ecs/components/doorComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
-import '../../engine/ecs/components/interactionComponent.dart';
-import '../../engine/ecs/components/positionComponent.dart';
-import '../../engine/ecs/components/spriteComponent.dart';
+import '../../engine/ecs/components/rendering/spriteComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
 import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
-import '../../engine/ecs/gameEntityRegistry.dart';
-import '../../engine/ecs/gameRenderSystem.dart';
-import '../../engine/ecs/gameSystem.dart';
 import '../../engine/ecs/system/entity/cameraSystem.dart';
 import '../../engine/ecs/system/entity/damageSystem.dart';
 import '../../engine/ecs/system/entity/interactionSystem.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
-import '../../engine/input/keyboard.dart';
 import '../../engine/input/mouse.dart';
 import '../../engine/logger/logger.dart';
 import '../../engine/primitives/color.dart';
 import '../../engine/rendering/rayCaster/camera.dart';
-import '../../engine/rendering/rayCaster/renderPerformance.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
-import '../components/healthComponent.dart';
 import 'gameScreenBase.dart';
 
 class TestScreen extends GameScreenBase implements GameScreen {

@@ -1,15 +1,9 @@
 import '../../engine/application/gameScreen.dart';
-import '../../engine/ecs/components/ai/aiComponent.dart';
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
 import '../../engine/ecs/components/cameraComponent.dart';
-import '../../engine/ecs/components/distanceComponent.dart';
-import '../../engine/ecs/components/doorComponent.dart';
 import '../../engine/ecs/components/floorComponent.dart';
-import '../../engine/ecs/components/itemComponent.dart';
-import '../../engine/ecs/components/positionComponent.dart';
+import '../../engine/ecs/components/rendering/spriteSheetComponent.dart';
 import '../../engine/ecs/components/sound/hurtSoundComponent.dart';
-import '../../engine/ecs/components/sound/timedSoundComponent.dart';
-import '../../engine/ecs/components/spriteComponent.dart';
+import '../../engine/ecs/components/rendering/spriteComponent.dart';
 import '../../engine/ecs/components/transparentComponent.dart';
 import '../../engine/ecs/components/velocityComponent.dart';
 import '../../engine/ecs/components/wallComponent.dart';
@@ -17,7 +11,6 @@ import '../../engine/ecs/gameEntity.dart';
 import '../../engine/ecs/gameEntityBuilder.dart';
 import '../../engine/ecs/system/render/rayCastRenderSystem.dart';
 import '../../engine/primitives/color.dart';
-import '../../engine/rendering/animatedSprite.dart';
 import '../../engine/rendering/rayCaster/camera.dart';
 import '../../engine/rendering/rayCaster/worldMap.dart';
 import '../../engine/rendering/sprite.dart';
@@ -70,27 +63,40 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     translationTable[0] = floor;
 
+    SpriteSheet spriteSheet = SpriteSheet(SpriteSheetDefinition("../../assets/images/outside/tileSetOutside.png",
+        [
+          "trees", "bush", "dirt", "berries", //
+          "shopSign", "shopDoor", "shopWindow", "showWall",
+          "stoneWall", "caveEntrance"
+        ], 16, 16));
+
     GameEntity wall = GameEntityBuilder("wall")
         .addComponent(WallComponent())
-        .addComponent(SpriteComponent(
-            Sprite(128, 128, "../../assets/images/outside/trees.png")))
+    .addComponent(SpriteSheetComponent(spriteSheet, "trees"))
+        //.addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/trees.png")))
         .build();
 
     translationTable[1] = wall;
 
-    GameEntity wall2 =
-    GameEntityBuilder("wall2")
-        .addComponent(TransparentComponent())
-        .addComponent(SpriteComponent(
-        Sprite(128, 128, "../../assets/images/outside/transparentWall.png")))
-        .addComponent(WallComponent()).build();
+    GameEntity wall2 = GameEntityBuilder("wall")
+        .addComponent(WallComponent())
+        .addComponent(SpriteSheetComponent(spriteSheet, "stoneWall"))
+        .build();
 
     translationTable[2] = wall2;
 
+    GameEntity wall3 =
+    GameEntityBuilder("wall2")
+        .addComponent(TransparentComponent())
+        .addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/transparentWall.png")))
+        .addComponent(WallComponent()).build();
+
+    translationTable[3] = wall3;
+
     GameEntity well =
     GameEntityBuilder("well")
-        .addComponent(SpriteComponent(
-        Sprite(128, 128, "../../assets/images/outside/well1.png")))
+        .addComponent(SpriteSheetComponent(spriteSheet, "berries"))
+      //  .addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/well1.png")))
         .addComponent(WallComponent()).build();
 
 
@@ -99,7 +105,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     List<int> grid = [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // no format
-      1, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+      1, 2, 2, 2, 2, 0, 2, 2, 2, 1,
       1, 2, 0, 0, 0, 0, 0, 0, 2, 1,
       1, 2, 0, 0, 0, 0, 0, 0, 2, 1,
       1, 2, 0, 2, 2, 2, 0, 0, 2, 1,
@@ -133,7 +139,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
     npcs.add(Dog.create());
 
 
-   npcs.add(Skeleton.create());
+  // npcs.add(Skeleton.create());
 
     return npcs;
   }

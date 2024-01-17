@@ -2,9 +2,6 @@
 
 
 import '../../../audio/audioManager.dart';
-import '../../../logger/logger.dart';
-import '../../../rendering/rayCaster/worldMap.dart';
-import '../../components/cameraComponent.dart';
 import '../../components/damageComponent.dart';
 import '../../components/inventoryComponent.dart';
 import '../../components/properties/takeDamageComponent.dart';

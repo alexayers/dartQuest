@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import '../../logger/logger.dart';
 import '../renderer.dart';
 import '../sprite.dart';
 import 'camera.dart';

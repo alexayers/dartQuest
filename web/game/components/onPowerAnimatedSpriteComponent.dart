@@ -1,4 +1,4 @@
-import '../../engine/ecs/components/animatedSpriteComponent.dart';
+import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
 import '../../engine/ecs/gameComponent.dart';
 
 class OnPowerAnimatedSpriteComponent implements GameComponent {

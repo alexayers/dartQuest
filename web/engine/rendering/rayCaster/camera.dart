@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import '../../ecs/components/distanceComponent.dart';
 import '../../ecs/components/doorComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../utils/mathUtils.dart';
