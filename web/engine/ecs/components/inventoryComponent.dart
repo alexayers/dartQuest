@@ -2,7 +2,7 @@ import '../gameComponent.dart';
 import '../gameEntity.dart';
 
 class InventoryComponent implements GameComponent {
-  List<GameEntity?> _inventory = [];
+  final List<GameEntity?> _inventory = [];
   int _maxItems = 6;
   int _currentItemIdx = 0;
 

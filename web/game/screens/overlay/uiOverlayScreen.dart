@@ -14,7 +14,7 @@ class UiOverlayScreen implements GameScreenOverlay {
   late AnimatedSprite coins;
   GameEntityRegistry gameEntityRegistry = GameEntityRegistry.instance;
   late GameEntity player;
-  WorldMap _worldMap = WorldMap.instance;
+  final WorldMap _worldMap = WorldMap.instance;
 
   @override
   void init() {

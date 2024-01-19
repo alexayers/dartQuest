@@ -23,11 +23,11 @@ class WorldDefinition {
 
 class WorldMap {
   static WorldMap? _instance;
-  late List<GameEntity> _gameMap = [];
+  late final List<GameEntity> _gameMap = [];
   late int _worldWidth;
   late int _worldHeight;
-  List<num> _doorOffsets = [];
-  List<DoorState> _doorStates = [];
+  final List<num> _doorOffsets = [];
+  final List<DoorState> _doorStates = [];
   late WorldDefinition worldDefinition;
   bool worldLoaded = false;
 

@@ -11,6 +11,7 @@ import '../../ecs/components/positionComponent.dart';
 import '../../ecs/components/rendering/spriteComponent.dart';
 import '../../ecs/gameEntity.dart';
 import '../../ecs/gameEntityRegistry.dart';
+import '../../logger/logger.dart';
 import '../../primitives/color.dart';
 import '../renderer.dart';
 import 'camera.dart';
@@ -267,14 +268,30 @@ class RayCaster {
           wallTexture.height!, x, drawStart, 1, lineHeight);
     } else {
 
-      int totalRows = 1;
-      int totalColumns=spriteSheetComponent!.spriteSheet.spriteSheetDefinition.spriteWidth;
-      int xPosition = spriteSheetComponent!.spriteSheet.spriteMap[spriteSheetComponent!.spriteName]!;
+      int perRow = spriteSheetComponent!.spriteSheet.spriteSheetDefinition.perRow;
+      int perCol = spriteSheetComponent.spriteSheet.spriteSheetDefinition.perCol;
 
-      int texX = (wallX * (wallTexture.width!/totalColumns) + (16*xPosition)).floor();
+      int xPosition = spriteSheetComponent.spriteSheet.spriteMap[spriteSheetComponent.spriteName]!.x.floor();
+      int yPosition = spriteSheetComponent.spriteSheet.spriteMap[spriteSheetComponent.spriteName]!.y.floor();
 
-      Renderer.renderClippedImage(wallTexture, texX, 0, 1,
-          (wallTexture.height!/totalRows), x, drawStart, 1, lineHeight);
+      // Calculate the width of each sprite
+      double spriteWidth = wallTexture.width! / perRow;
+      double spriteHeight = wallTexture.height! / perCol;
+
+      // Calculate texX
+      int texX = (wallX * spriteWidth).floor() + (spriteWidth * xPosition).floor();
+      int sourceY = (spriteHeight * yPosition).floor();
+
+      Renderer.renderClippedImage(wallTexture, //texture
+          texX,  // sourceX
+          sourceY, // sourceY
+          1, // sourceWidth
+          (wallTexture.height!/perCol),  // sourceHeight
+          x, // destinationX
+          drawStart, // destinationY
+          1, // destinationWidth
+          lineHeight // destinationHeight
+      );
     }
 
   }

@@ -12,7 +12,7 @@ class AnimatedSprite {
   final int _maxTicks = 8;
   int _currentFrame = 0;
   String _currentAction;
-  Map<String, List<ImageElement>> _frames = {};
+  final Map<String, List<ImageElement>> _frames = {};
 
   AnimatedSprite(Map<String,List<String>> imageFiles, this.width, this.height, this._currentAction) {
 

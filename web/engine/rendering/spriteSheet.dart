@@ -1,12 +1,14 @@
 import 'dart:html';
 
 import '../logger/logger.dart';
-import 'renderer.dart';
+import '../utils/mathUtils.dart';
 
 class SpriteSheetDefinition {
   String spriteSheet;
   int spriteWidth;
   int spriteHeight;
+  late int perRow;
+  late int perCol;
   List<String> sprites;
 
   SpriteSheetDefinition(
@@ -25,7 +27,7 @@ class SpriteLocation {
 class SpriteSheet {
 
   late final SpriteSheetDefinition spriteSheetDefinition;
-  final Map<String, int> spriteMap = {};
+  final Map<String, Vector2> spriteMap = {};
   final ImageElement image = ImageElement();
 
   SpriteSheet(SpriteSheetDefinition spriteSheetDefinition) {
@@ -38,25 +40,33 @@ class SpriteSheet {
 
     image.onLoad.listen((event) {
       int width = image.width!;
+      int height = image.height!;
       int spritesPerRow = (width / spriteSheetDefinition.spriteWidth).floor();
-      int i = 0;
+      int spritesPerCol = (height / spriteSheetDefinition.spriteHeight).floor();
+
+      int x = 0; // x position in sprite terms
+      int y = 0; // y position in sprite terms
 
       for (String spriteName in spriteSheetDefinition.sprites) {
-        spriteMap[spriteName] = i;
-        spriteCount++;
-        i++;
+
+        spriteMap[spriteName] = Vector2(x, y);
 
         logger(LogType.info, "Loaded $spriteName at ${offsetX}x$offsetY");
 
-        if (spriteCount == spritesPerRow) {
-          spriteCount = 0;
-          offsetX = 0;
-          offsetY += spriteSheetDefinition.spriteHeight;
-        } else {
-          offsetX += spriteSheetDefinition.spriteWidth;
+        x++;
+
+        // Check if we reached the end of the row
+        if (x >= spritesPerRow) {
+          x = 0; // Reset column position for sprites
+          y++;
         }
       }
+
+      spriteSheetDefinition.perRow = spritesPerRow;
+      spriteSheetDefinition.perCol = spritesPerCol;
     });
+
+
   }
 
   /*

@@ -19,7 +19,6 @@ import '../components/healthComponent.dart';
 import '../items/flowers.dart';
 import '../items/grave.dart';
 import '../npc/dog.dart';
-import '../npc/skeleton.dart';
 import '../systems/rendering/fogRenderSystem.dart';
 import '../systems/rendering/rainRenderSystem.dart';
 import 'gameScreenBase.dart';
@@ -63,44 +62,37 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
     translationTable[0] = floor;
 
-    SpriteSheet spriteSheet = SpriteSheet(SpriteSheetDefinition("../../assets/images/outside/tileSetOutside.png",
+    SpriteSheet spriteSheet = SpriteSheet(SpriteSheetDefinition("../../assets/images/outside/tileSetOutside2.png",
         [
           "trees", "bush", "dirt", "berries", //
+          "waterFall1", "waterFall2", "waterFall3", "waterFall4",
           "shopSign", "shopDoor", "shopWindow", "showWall",
-          "stoneWall", "caveEntrance"
+          "stoneWall", "caveEntrance","transparentWall"
         ], 16, 16));
 
     GameEntity wall = GameEntityBuilder("wall")
         .addComponent(WallComponent())
     .addComponent(SpriteSheetComponent(spriteSheet, "trees"))
-        //.addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/trees.png")))
         .build();
 
     translationTable[1] = wall;
 
-    GameEntity wall2 = GameEntityBuilder("wall")
-        .addComponent(WallComponent())
-        .addComponent(SpriteSheetComponent(spriteSheet, "stoneWall"))
-        .build();
 
-    translationTable[2] = wall2;
-
-    GameEntity wall3 =
+    GameEntity wall2 =
     GameEntityBuilder("wall2")
         .addComponent(TransparentComponent())
         .addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/transparentWall.png")))
         .addComponent(WallComponent()).build();
 
-    translationTable[3] = wall3;
+    translationTable[2] = wall2;
 
-    GameEntity well =
-    GameEntityBuilder("well")
-        .addComponent(SpriteSheetComponent(spriteSheet, "berries"))
-      //  .addComponent(SpriteComponent(Sprite(128, 128, "../../assets/images/outside/well1.png")))
+    GameEntity stoneWall =
+    GameEntityBuilder("stoneWall")
+        .addComponent(SpriteSheetComponent(spriteSheet, "shopSign"))
         .addComponent(WallComponent()).build();
 
 
-    translationTable[3] = well;
+    translationTable[3] = stoneWall;
 
 
     List<int> grid = [
@@ -113,7 +105,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
       1, 2, 0, 2, 2, 2, 0, 0, 2, 1,
       1, 2, 0, 0, 0, 0, 0, 0, 2, 1,
       1, 2, 2, 2, 2, 2, 2, 2, 2, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+      1, 1, 1, 3, 1, 1, 1, 1, 1, 1
     ];
 
     WorldDefinition worldDefinition = WorldDefinition();

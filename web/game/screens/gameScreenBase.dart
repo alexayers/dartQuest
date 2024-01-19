@@ -65,7 +65,7 @@ class GameScreenBase {
 
   double _stabProgress = 0;
   bool _isStabbing = false;
-  double _stabSpeed = 0.2; // Control the speed of stabbing
+  final double _stabSpeed = 0.2; // Control the speed of stabbing
 
 
   int _moves = 0;

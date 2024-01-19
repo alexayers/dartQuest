@@ -16,16 +16,16 @@ class PathNode {
 }
 
 class AStar {
-  Map<int, PathNode> _closedSet = {};
-  Map<int, PathNode> _openSet = {};
+  final Map<int, PathNode> _closedSet = {};
+  final Map<int, PathNode> _openSet = {};
   List<PathNode> path = [];
   PathNode _currentNode = PathNode(0, 0);
 
-  int _startX;
-  int _startY;
-  int _endX;
-  int _endY;
-  WorldMap _worldMap = WorldMap.instance;
+  final int _startX;
+  final int _startY;
+  final int _endX;
+  final int _endY;
+  final WorldMap _worldMap = WorldMap.instance;
 
   AStar(this._startX, this._startY, this._endX, this._endY) {
     int idx = _translateCoordinatesToIdx(_startX, _startY);

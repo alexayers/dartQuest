@@ -2,7 +2,7 @@ import '../logger/logger.dart';
 import 'gameEvent.dart';
 
 class GameEventBus {
-  static Map<String, List<Function>> _channels = Map();
+  static final Map<String, List<Function>> _channels = {};
 
   static void register(String channel, Function eventHandler) {
     if (!GameEventBus._channels.containsKey(channel)) {
