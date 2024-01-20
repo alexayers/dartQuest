@@ -129,7 +129,7 @@ class OutsideScreen extends GameScreenBase implements GameScreen {
 
 
 //    npcs.add(Dog.create());
-//    npcs.add(Dog.create());
+     npcs.add(Dog.create());
 
 
   // npcs.add(Skeleton.create());

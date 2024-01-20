@@ -14,12 +14,11 @@ class Flower {
     Map<String, List<String>> animation = {};
     animation["default"] = ["../../assets/images/outside/flowers.png"];
 
-    AnimatedSprite animatedSprite = AnimatedSprite(animation, 32, 32, "default");
 
     return GameEntityBuilder("flowers")
         .addComponent(ItemComponent())
         .addComponent(PositionComponent(3.4, 4.9))
-        .addComponent(AnimatedSpriteComponent(animatedSprite))
+        .addComponent(AnimatedSpriteComponent(animation, 32, 32, "default"))
         .build();
   }
 }

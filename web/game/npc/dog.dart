@@ -27,10 +27,14 @@ class Dog {
 
     Map<String,List<String>> animation = {};
 
-    animation["walking"] = ["dogWalk1","dogWalk2","dogWalk3"];
-    animation["idle"] = ["dogSit1", "dogSit2", "dogSit3"];
+    animation["walking"] = ["../../assets/images/npc/dog/dog1.png",
+      "../../assets/images/npc/dog/dog2.png",
+      "../../assets/images/npc/dog/dog3.png"];
+    animation["default"] = [
+      "../../assets/images/npc/dog/dogSit1.png",
+      "../../assets/images/npc/dog/dogSit2.png",
+      "../../assets/images/npc/dog/dogSit3.png"];
 
-    SpriteSheet spriteSheet = SpriteSheet(spriteSheetDefinition);
 
     return GameEntityBuilder("dog")
         .addComponent(DistanceComponent())
@@ -39,7 +43,7 @@ class Dog {
         TimedSoundComponent("bark", "../../assets/sound/bark.wav", 2000))
         .addComponent(AiComponent(MovementStyle.wander, true))
         .addComponent(PositionComponent(3, 3))
-        .addComponent(AnimatedSpriteSheetComponent(spriteSheet, animation, "walking"))
+        .addComponent(AnimatedSpriteComponent(animation, 32,32, "walking"))
         .build();
   }
 
