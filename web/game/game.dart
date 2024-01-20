@@ -1,8 +1,8 @@
-import '../engine/application/gameScreen.dart';
-import '../engine/application/teenyTinyTwoDee.dart';
-import 'screens/outsideScreen.dart';
-import 'screens/pressEnterScreen.dart';
-import 'screens/renderTestScreen.dart';
+import '../engine/application/game_screen.dart';
+import '../engine/application/teeny_tiny_two_dee.dart';
+import 'screens/outside_screen.dart';
+import 'screens/press_enter_screen.dart';
+import 'screens/render_test_screen.dart';
 import 'screens/screens.dart';
 
 class Game extends TeenyTinyTwoDeeApp {

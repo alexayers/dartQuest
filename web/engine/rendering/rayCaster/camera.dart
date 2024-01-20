@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import '../../ecs/components/doorComponent.dart';
-import '../../ecs/gameEntity.dart';
-import '../../utils/mathUtils.dart';
-import 'worldMap.dart';
+import '../../ecs/components/door_component.dart';
+import '../../ecs/game_entity.dart';
+import '../../utils/math_utils.dart';
+import 'world_map.dart';
 
 class Camera {
   num xPos;

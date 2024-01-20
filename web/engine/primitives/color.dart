@@ -1,4 +1,4 @@
-import '../utils/colorUtils.dart';
+import '../utils/color_utils.dart';
 
 class Color {
   int red;

@@ -1,4 +1,4 @@
-import '../application/globalState.dart';
+import '../application/global_state.dart';
 
 var keyboardInput = (
   escape: 27,

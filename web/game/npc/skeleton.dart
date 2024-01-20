@@ -1,17 +1,17 @@
 
 
-import '../../engine/ecs/components/ai/aiComponent.dart';
-import '../../engine/ecs/components/rendering/animatedSpriteComponent.dart';
-import '../../engine/ecs/components/damageComponent.dart';
-import '../../engine/ecs/components/distanceComponent.dart';
-import '../../engine/ecs/components/inventoryComponent.dart';
-import '../../engine/ecs/components/positionComponent.dart';
-import '../../engine/ecs/components/sound/useSoundComponent.dart';
-import '../../engine/ecs/components/velocityComponent.dart';
-import '../../engine/ecs/gameEntity.dart';
-import '../../engine/ecs/gameEntityBuilder.dart';
-import '../../engine/rendering/animatedSprite.dart';
-import '../components/healthComponent.dart';
+import '../../engine/ecs/components/ai/ai_component.dart';
+import '../../engine/ecs/components/rendering/animated_sprite_component.dart';
+import '../../engine/ecs/components/damage_component.dart';
+import '../../engine/ecs/components/distance_component.dart';
+import '../../engine/ecs/components/inventory_component.dart';
+import '../../engine/ecs/components/position_component.dart';
+import '../../engine/ecs/components/sound/use_sound_component.dart';
+import '../../engine/ecs/components/velocity_component.dart';
+import '../../engine/ecs/game_entity.dart';
+import '../../engine/ecs/game_entity_builder.dart';
+import '../../engine/rendering/animated_sprite.dart';
+import '../components/health_component.dart';
 
 class Skeleton {
 

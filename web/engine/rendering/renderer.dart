@@ -4,7 +4,7 @@ import 'dart:math';
 import '../logger/logger.dart';
 import '../primitives/color.dart';
 import '../primitives/rect.dart';
-import '../utils/colorUtils.dart';
+import '../utils/color_utils.dart';
 import 'font.dart';
 
 class Renderer {
