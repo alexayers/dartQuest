@@ -1,4 +1,6 @@
-import 'game/game.dart';
+
+
+import 'package:teenytinytwodee/game/game.dart';
 
 void main() {
   var game = Game();

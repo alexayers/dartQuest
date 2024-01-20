@@ -1,0 +1,19 @@
+{
+  "name": "Dart Game",
+  "version": "1.0.0",
+  "description": "A dart game",
+  "main": "./web/main.js",
+  "scripts": {
+    "build": "webdev build",
+    "build_runner_serve": "pub run build_runner serve --hot-reload",
+    "dev": "run-p \"build_runner_serve\" \"start\"",
+    "start": "electron ."
+  },
+  "repository": "https://github.com/alexayers/dart-quest",
+  "author": "GitHub",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
